@@ -15,6 +15,9 @@ public:
 	void Update(float deltaTime);
 	void Render();
 
+	void SetPosition(const SVector2& pos) { mPosition = pos; }
+	const SVector2& GetPosition() const			{ return mPosition; }
+
 private:
 	SGE_Sprite mSprite;
 	SVector2 mPosition;

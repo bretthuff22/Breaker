@@ -9,9 +9,7 @@ Fighter::~Fighter()
 }
 void Fighter::Load()
 {
-	mSprite.Load("Cyclops.png");
-	mPosition.x = 100.0f;
-	mPosition.y = 100.0f;
+	mSprite.Load("fighter.png");
 }
 void Fighter::Unload()
 {
@@ -40,6 +38,9 @@ void Fighter::Update(float deltaTime)
 }
 void Fighter::Render()
 {
-	mSprite.SetPosition(mPosition);
+	const float kHalfWidth = mSprite.GetWidth() * 0.5f;
+	const float kHalfHeight = mSprite.GetHeight() * 0.5f;
+	SVector2 renderPos(mPosition.x - kHalfWidth, mPosition.y - kHalfHeight);
+	mSprite.SetPosition(renderPos);
 	mSprite.Render();
 }
