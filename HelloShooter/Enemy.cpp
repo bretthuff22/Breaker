@@ -14,7 +14,8 @@ void Enemy::Load()
 {
 	mSprite.Load("fighter.png");
 	mSprite.SetFlipV(true);
-	mSprite.SetScale(0.6f, 0.6f, true);
+	float scalar = RandomFloat(0.1f, 1.0f);
+	mSprite.SetScale(scalar, scalar, true);
 }	
 void Enemy::Unload()
 {
