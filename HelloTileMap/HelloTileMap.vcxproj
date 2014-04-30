@@ -85,6 +85,10 @@
     <None Include="sge.ini" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppState.cpp" />
+    <ClCompile Include="FrontendState.cpp" />
+    <ClCompile Include="GameContext.cpp" />
+    <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -95,12 +99,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppState.h" />
+    <ClInclude Include="FrontendState.h" />
+    <ClInclude Include="GameContext.h" />
+    <ClInclude Include="GameplayState.h" />
+    <ClInclude Include="GameStates.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="level01.txt" />
+    <Text Include="level02.txt" />
     <Text Include="texturepack01.txt" />
+    <Text Include="texturepack02.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

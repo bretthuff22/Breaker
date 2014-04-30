@@ -7,10 +7,19 @@
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="AppState.cpp" />
+    <ClCompile Include="GameplayState.cpp" />
+    <ClCompile Include="FrontendState.cpp" />
+    <ClCompile Include="GameContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="AppState.h" />
+    <ClInclude Include="GameplayState.h" />
+    <ClInclude Include="FrontendState.h" />
+    <ClInclude Include="GameStates.h" />
+    <ClInclude Include="GameContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -22,6 +31,12 @@
       <Filter>Data</Filter>
     </Text>
     <Text Include="texturepack01.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level02.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="texturepack02.txt">
       <Filter>Data</Filter>
     </Text>
   </ItemGroup>

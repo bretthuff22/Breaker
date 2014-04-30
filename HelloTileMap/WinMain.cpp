@@ -1,28 +1,53 @@
 #include <SGE.h>
 using namespace SGE;
 
-#include "Map.h"
+#include "FrontendState.h"
+#include "GameplayState.h"
+#include "GameContext.h"
 
-Map map;
+AppState* currentState = nullptr;
+GameState nextState = GameState::Invalid;
+GameContext gameContext;
+
 
 void SGE_Initialize()
 {
-	map.Load("level01.txt", "texturepack01.txt");
+	currentState = new FrontendState(gameContext);
+	currentState->Load();
 }
 
 void SGE_Terminate()
 {
-	map.Unload();
+	currentState->Unload();
+	delete currentState;
+	currentState = nullptr;
 }
 
 bool SGE_Update(float deltaTime)
 {
-	map.Update(deltaTime);
-	return Input_IsKeyPressed(Keys::ESCAPE);
+	if (nextState != GameState::Invalid)
+	{
+		currentState->Unload();
+		delete currentState;
+
+		switch(nextState)
+		{
+		case GameState::Frontend:
+			currentState = new FrontendState(gameContext);
+			break;
+		case GameState:: Gameplay:
+			currentState = new GameplayState(gameContext);
+			break;
+		}
+
+		currentState->Load();
+	}
+	nextState = currentState->Update(deltaTime);
+	return (nextState == GameState::Quit);
 }
 
 void SGE_Render()
 {
-	map.Render();
+	currentState->Render();
 }
 

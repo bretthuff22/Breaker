@@ -17,6 +17,9 @@ public:
 	void Render();
 
 private:
+	// Block copy construction and assignment operation
+	Map(const Map& rhs);
+	Map& operator=(const Map&);
 	bool LoadLevel(const char* pLevelFile);
 	bool LoadTexturePack(const char* pTexturePack);
 
