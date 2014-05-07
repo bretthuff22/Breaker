@@ -14,7 +14,12 @@ public:
 	void Load(const char* pLevelFile, const char* pTexturePack);
 	void Unload();
 	void Update(float deltaTime);
-	void Render();
+	void Render(const SVector2& offset);
+
+	SRect GetBoundingBoxFromSegment(const SLineSegment& line) const;
+
+	int GetWidth() const		{ return mColumns * mTileSize; }
+	int GetHeight() const		{ return mRows * mTileSize; }
 
 private:
 	// Block copy construction and assignment operation

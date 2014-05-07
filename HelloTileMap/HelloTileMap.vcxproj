@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppState.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="FrontendState.cpp" />
     <ClCompile Include="GameContext.cpp" />
     <ClCompile Include="GameplayState.cpp" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppState.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="FrontendState.h" />
     <ClInclude Include="GameContext.h" />
     <ClInclude Include="GameplayState.h" />
@@ -110,6 +112,8 @@
   <ItemGroup>
     <Text Include="level01.txt" />
     <Text Include="level02.txt" />
+    <Text Include="mariolevel.txt" />
+    <Text Include="mariopack.txt" />
     <Text Include="texturepack01.txt" />
     <Text Include="texturepack02.txt" />
   </ItemGroup>

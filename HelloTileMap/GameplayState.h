@@ -3,6 +3,7 @@
 
 #include "AppState.h"
 #include "Map.h"
+#include "Character.h"
 
 class GameplayState : public AppState
 {
@@ -18,6 +19,7 @@ public:
 
 private:
 	Map mMap;
+	Character mCharacter;
 };
 
 #endif // #ifndef INCLUDED_GameplayState_H

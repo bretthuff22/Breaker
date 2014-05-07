@@ -64,7 +64,7 @@ void Map::Update(float deltaTime)
 {
 }
 
-void Map::Render()
+void Map::Render(const SVector2& offset)
 {
 	for(int y = 0; y < mRows; ++y)
 	{
@@ -73,10 +73,49 @@ void Map::Render()
 			const int i = x + (y*mColumns);
 			const SVector2 pos = mTiles[i].GetPosition();
 			const int type = mTiles[i].GetType();
-			mSprites[type].SetPosition(pos);
+			SVector2 renderPos = pos + offset;
+			mSprites[type].SetPosition(renderPos);
 			mSprites[type].Render();
 		}
 	}
+}
+
+SRect Map::GetBoundingBoxFromSegment(const SLineSegment& line) const
+{
+	// Validate the line segment
+	if (line.from.x < 0.0f || line.from.x > GetWidth() ||
+		line.from.y < 0.0f || line.from.y > GetHeight() ||
+		line.to.x < 0.0f || line.to.x > GetWidth() ||
+		line.to.y < 0.0f || line.to.y > GetHeight())
+	{
+		// Line segment is out of bounds
+		return SRect();
+	}
+
+	// Convert position to indices
+	const int fromX = (int)line.from.x / mTileSize;
+	const int fromY = (int)line.from.y / mTileSize;
+	const int toX = (int)line.to.x / mTileSize;
+	const int toY = (int)line.to.y / mTileSize;
+
+	// Calculate tile count
+	const int countX = toX - fromX + 1;
+	const int countY =  toY - fromY + 1;
+
+	// Get region
+	SRect region;
+	for (int y = 0; y < countY; ++y)
+	{
+		for (int x = 0; x < countX; ++x)
+		{
+			const int index = (fromX + x) + ((fromY + y) * mColumns);
+			if (!mTiles[index].IsWalkable())
+			{
+				region += mTiles[index].GetBoundingBox();
+			}
+		}
+	}
+	return region;
 }
 
 bool Map::LoadLevel(const char* pLevelFile)
@@ -114,6 +153,7 @@ bool Map::LoadLevel(const char* pLevelFile)
 			mTiles[i].SetPosition(SVector2(posX, posY));
 			mTiles[i].SetSize(mTileSize);
 			mTiles[i].SetType(fgetc(pFile) - '0'); // (-'0') converts to int
+			mTiles[i].SetWalkable(mTiles[i].GetType() == 0);
 		}
 		fgetc(pFile);
 	}

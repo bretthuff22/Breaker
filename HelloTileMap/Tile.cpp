@@ -10,3 +10,14 @@ Tile::Tile()
 Tile::~Tile()
 {
 }
+
+SRect Tile::GetBoundingBox() const
+{
+	return SRect
+	(
+		mPosition.x,
+		mPosition.y, 
+		mPosition.x + mSize,
+		mPosition.y + mSize
+	);
+}

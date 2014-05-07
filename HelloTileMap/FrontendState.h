@@ -22,6 +22,7 @@ private:
 	SGE_Cursor mCursor;
 	SGE_Button mStartButton;
 	SGE_Button mStartButton2;
+	SGE_Button mStartButton3;
 	
 };
 

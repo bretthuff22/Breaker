@@ -11,6 +11,7 @@
     <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="FrontendState.cpp" />
     <ClCompile Include="GameContext.cpp" />
+    <ClCompile Include="Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tile.h" />
@@ -20,6 +21,7 @@
     <ClInclude Include="FrontendState.h" />
     <ClInclude Include="GameStates.h" />
     <ClInclude Include="GameContext.h" />
+    <ClInclude Include="Character.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -37,6 +39,12 @@
       <Filter>Data</Filter>
     </Text>
     <Text Include="texturepack02.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="mariolevel.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="mariopack.txt">
       <Filter>Data</Filter>
     </Text>
   </ItemGroup>
