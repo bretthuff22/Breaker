@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Data">
+      <UniqueIdentifier>{43c141fd-9112-4ecc-8c1d-7d3952ee4741}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AnimationStates">
+      <UniqueIdentifier>{7953253b-7851-46d2-a6a9-7ac8ca6b574c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="level01.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="texturepack01.txt">
+      <Filter>Data</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sge.ini">
+      <Filter>Data</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CharacterFall.cpp">
+      <Filter>AnimationStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterIdle.cpp">
+      <Filter>AnimationStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterJump.cpp">
+      <Filter>AnimationStates</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterWalk.cpp">
+      <Filter>AnimationStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CharacterFall.h">
+      <Filter>AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterIdle.h">
+      <Filter>AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterJump.h">
+      <Filter>AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterState.h">
+      <Filter>AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterWalk.h">
+      <Filter>AnimationStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Tile.h" />
+  </ItemGroup>
+</Project>

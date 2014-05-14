@@ -1,0 +1,3 @@
+Count: 2
+grass_2.png
+stone.png

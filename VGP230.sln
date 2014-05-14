@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloShooter", "HelloShoote
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloTileMap", "HelloTileMap\HelloTileMap.vcxproj", "{EF3C9CDF-23AB-4DDA-881E-A186F0BF492C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloAnimation", "HelloAnimation\HelloAnimation.vcxproj", "{71EBDB31-DDE9-4092-906C-D10DA6F5E8C9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Breaker", "Breaker\Breaker.vcxproj", "{D031B89A-053D-48D4-B184-757171765E6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +35,14 @@ Global
 		{EF3C9CDF-23AB-4DDA-881E-A186F0BF492C}.Debug|Win32.Build.0 = Debug|Win32
 		{EF3C9CDF-23AB-4DDA-881E-A186F0BF492C}.Release|Win32.ActiveCfg = Release|Win32
 		{EF3C9CDF-23AB-4DDA-881E-A186F0BF492C}.Release|Win32.Build.0 = Release|Win32
+		{71EBDB31-DDE9-4092-906C-D10DA6F5E8C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{71EBDB31-DDE9-4092-906C-D10DA6F5E8C9}.Debug|Win32.Build.0 = Debug|Win32
+		{71EBDB31-DDE9-4092-906C-D10DA6F5E8C9}.Release|Win32.ActiveCfg = Release|Win32
+		{71EBDB31-DDE9-4092-906C-D10DA6F5E8C9}.Release|Win32.Build.0 = Release|Win32
+		{D031B89A-053D-48D4-B184-757171765E6B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D031B89A-053D-48D4-B184-757171765E6B}.Debug|Win32.Build.0 = Debug|Win32
+		{D031B89A-053D-48D4-B184-757171765E6B}.Release|Win32.ActiveCfg = Release|Win32
+		{D031B89A-053D-48D4-B184-757171765E6B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

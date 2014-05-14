@@ -3,6 +3,7 @@
 Character::Character()
 	: mPosition(0.0f, 0.0f)
 	, mVelocity(0.0f, 0.0f)
+	, mJumping(true)
 {
 }
 
@@ -70,18 +71,30 @@ void Character::Update(float deltaTime, const Map& map)
 
 
 	//Check vertical movement
-	if (Input_IsKeyDown(Keys::DOWN))
+	//if (Input_IsKeyDown(Keys::DOWN))
+	//{
+	//	mVelocity.y = kSpeed * deltaTime;
+	//}
+	//else if (Input_IsKeyDown(Keys::UP))
+	//{
+	//	mVelocity.y = -kSpeed * deltaTime;
+	//}
+	//else
+	//{
+	//	mVelocity.y = 0.0f;
+	//}
+
+	if(!mJumping && Input_IsKeyPressed(Keys::UP))
 	{
-		mVelocity.y = kSpeed * deltaTime;
-	}
-	else if (Input_IsKeyDown(Keys::UP))
-	{
-		mVelocity.y = -kSpeed * deltaTime;
+		mVelocity.y = -30.0f;
+		mJumping = true;
 	}
 	else
 	{
-		mVelocity.y = 0.0f;
+		mVelocity.y += 100.0f * deltaTime;
 	}
+
+	mVelocity.y = Min(mVelocity.y, 30.0f);
 
 	// Check collision
 	newbb =  bb + SVector2(0.0f, mVelocity.y);
@@ -92,11 +105,14 @@ void Character::Update(float deltaTime, const Map& map)
 	if(mVelocity.y > 0.0f && bottombb.IsValid())
 	{
 		mPosition.y += (int)(bottombb.min.y - bb.max.y) - 1.0f;
+		mVelocity.y = 0.0f;
+		mJumping = false;
 	}
 	// Top collision
 	else if(mVelocity.y < 0.0f && topbb.IsValid())
 	{
 		mPosition.y += (int)(topbb.max.y - bb.min.y) + 1.0f;
+		mVelocity.y = 0.0f;
 	}
 	else
 	{

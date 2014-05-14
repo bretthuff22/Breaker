@@ -1,16 +1,16 @@
-#ifndef INCLUDED_Character_H
-#define INCLUDED_Character_H
+#ifndef INCLUDED_Paddle_H
+#define INCLUDED_Paddle_H
 
 #include <SGE.h>
 using namespace SGE;
 
 #include "Map.h"
 
-class Character
+class Paddle
 {
 public: 
-	Character();
-	~Character();
+	Paddle();
+	~Paddle();
 
 	SRect GetBoundingBox() const;
 
@@ -21,19 +21,16 @@ public:
 	void Render(const SVector2& offset);
 
 	const SVector2& GetPosition() const				{ return mPosition;}
-	const SVector2& GetVelocity() const				{ return mVelocity;}
 
 	void SetPosition(const SVector2& pos)			{ mPosition = pos;}
-	void SetVelocity(const SVector2& vel)			{ mVelocity = vel;}
+
 
 private:
 	SGE_Sprite mSprite;
 
 	SVector2 mPosition;
-	SVector2 mVelocity;
 
-	bool mJumping;
 	
 };
 
-#endif // #ifndef INCLUDED_Character_H
+#endif // #ifndef INCLUDED_Paddle_H
