@@ -10,6 +10,8 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Paddle.h" />
@@ -21,6 +23,8 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

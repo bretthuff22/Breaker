@@ -5,8 +5,10 @@
 using namespace SGE;
 
 #include "Map.h"
+#include "Collider.h"
+#include "CollisionManager.h"
 
-class Ball
+class Ball : public Collider
 {
 public:
 	Ball();
@@ -20,17 +22,17 @@ public:
 	void Fire(const SVector2& pos, const SVector2& vel);
 	void Kill();
 
-	SCircle GetBoundingCircle() const	{ return SCircle(mPosition, 10.0f); } // approx radius
-	SRect GetBoundingBox() const		{ return SRect(mPosition.x - 10.0f, mPosition.y - 20.0f, mPosition.x + 10.0f, mPosition.y);}
+	// SCircle GetBoundingCircle() const	{ return SCircle(mPosition, 8.0f); } // approx radius
+	void CreateBoundingBox()			{ Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - 64.0f, Collider::GetPosition().y - 32.0f, Collider::GetPosition().x + 64.0f, Collider::GetPosition().y	)); }
+	
+	void SetAlive(bool alive)			{ mActive = alive; }
 	bool IsAlive() const				{ return mActive; }
 
-	void SetPosition(const SVector2& pos)			{ mPosition = pos;}
+	void SetRandomVelocity();
 
 
 private:
 	SGE_Sprite mSprite;
-	SVector2 mPosition;
-	SVector2 mVelocity;
 	bool mActive;
 };
 

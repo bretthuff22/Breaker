@@ -1,32 +1,34 @@
 #include "Paddle.h"
 
 Paddle::Paddle()
-	: mPosition(250.0f, 500.0f)
 {
+	Collider::SetPosition(SVector2 (250.0f, 500.0f));
+	Collider::SetVelocity(SVector2 (0.0f, 0.0f));
+	Collider::SetShape(Collider::box);
 }
 
 Paddle::~Paddle()
 {
 }
 
-SRect Paddle::GetBoundingBox() const
+void Paddle::CreateBoundingBox() 
 {
-	return SRect
-	(
-		mPosition.x - 128.0f,
-		mPosition.y - 56.0f, 
-		mPosition.x + 128.0f,
-		mPosition.y
-	);
+	Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - 64.0f,
+										Collider::GetPosition().y - 32.0f, 
+										Collider::GetPosition().x + 64.0f,
+										Collider::GetPosition().y	));
 }
 
 void Paddle::Load()
 {
 	mSprite.Load("paddle.png");
+	CreateBoundingBox();
+	CollisionManager::Get().Register(this);
 }
 void Paddle::Unload()
 {
 	mSprite.Unload();
+	CollisionManager::Get().UnRegister(this);
 }
 void Paddle::Update(float deltaTime, const Map& map)
 {
@@ -35,75 +37,35 @@ void Paddle::Update(float deltaTime, const Map& map)
 	//Check horizontal movement
 	if (Input_IsKeyDown(Keys::RIGHT))
 	{
-		mPosition.x += kSpeed * deltaTime;
+		Collider::SetPosition(SVector2(Collider::GetPosition().x + kSpeed * deltaTime, Collider::GetPosition().y));
 	}
 	else if (Input_IsKeyDown(Keys::LEFT))
 	{
-		mPosition.x += -kSpeed * deltaTime;
+		Collider::SetPosition(SVector2(Collider::GetPosition().x - kSpeed * deltaTime, Collider::GetPosition().y));
 	}
 
 	// Check collision
 	SRect bb = GetBoundingBox();
-	//SRect newbb = bb + SVector2(mVelocity.x, 0.0f);
 	SRect rightbb = map.GetBoundingBoxFromSegment(bb.GetRightSegment()) ;
 	SRect leftbb = map.GetBoundingBoxFromSegment(bb.GetLeftSegment());
 
 	// Right collision
 	if (rightbb.IsValid())
 	{
-		mPosition.x += (int)(rightbb.min.x - bb.max.x) - 1.0f;
+		Collider::SetPosition(SVector2(Collider::GetPosition().x + (int)(rightbb.min.x - bb.max.x) - 1.0f, Collider::GetPosition().y));
 	}
 	// Left collision
 	else if (leftbb.IsValid())
 	{
-		mPosition.x += (int)(leftbb.max.x - bb.min.x) + 1.0f;
+		Collider::SetPosition(SVector2(Collider::GetPosition().x + (int)(leftbb.max.x - bb.min.x) + 1.0f, Collider::GetPosition().y)) ;
 	}
-	//else
-	//{
-	//	mPosition.x += (int)mVelocity.x;
-	//}
-
-
-	//Check vertical movement
-	//if (Input_IsKeyDown(Keys::DOWN))
-	//{
-	//	mVelocity.y = kSpeed * deltaTime;
-	//}
-	//else if (Input_IsKeyDown(Keys::UP))
-	//{
-	//	mVelocity.y = -kSpeed * deltaTime;
-	//}
-	//else
-	//{
-	//	mVelocity.y = 0.0f;
-	//}
-
-	
-	// Check collision
-	//newbb =  bb + SVector2(0.0f, mVelocity.y);
-	//SRect bottombb = map.GetBoundingBoxFromSegment(newbb.GetBottomSegment());
-	//SRect topbb = map.GetBoundingBoxFromSegment(newbb.GetTopSegment());
-
-	// Bottom collision
-	//if(mVelocity.y > 0.0f && bottombb.IsValid())
-	//{
-	//	mPosition.y += (int)(bottombb.min.y - bb.max.y) - 1.0f;
-	//	mVelocity.y = 0.0f;
-	//	mJumping = false;
-	//}
-	// Top collision
-	//else if(mVelocity.y < 0.0f && topbb.IsValid())
-	//{
-	//	mPosition.y += (int)(topbb.max.y - bb.min.y) + 1.0f;
-	//	mVelocity.y = 0.0f;
-	//}
 
 }
 void Paddle::Render(const SVector2& offset)
 {
 	const int kTextureWidth = mSprite.GetWidth();
 	const int kTextureHeight = mSprite.GetHeight();
-	SVector2 renderPos(mPosition.x - (kTextureWidth * 0.5f), mPosition.y - kTextureHeight);
+	SVector2 renderPos(Collider::GetPosition().x - (kTextureWidth * 0.5f), Collider::GetPosition().y - kTextureHeight);
 	mSprite.SetPosition(renderPos/* + offset*/);
 	mSprite.Render();
 }

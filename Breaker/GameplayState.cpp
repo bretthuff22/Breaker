@@ -29,7 +29,7 @@ void GameplayState::Load()
 	mPaddle.Load();
 	mPaddle.SetPosition(SVector2(400.0f, 550.0f));
 	mBall.Load();
-	mBall.SetPosition(SVector2(400.0f, 500.0f));
+	mBall.SetPosition(SVector2(400.0f, 484.0f));
 }
 
 void GameplayState::Unload()
