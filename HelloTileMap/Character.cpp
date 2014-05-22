@@ -130,3 +130,4 @@ void Character::Render(const SVector2& offset)
 	mSprite.SetPosition(renderPos + offset);
 	mSprite.Render();
 }
+

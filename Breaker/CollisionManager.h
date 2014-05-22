@@ -13,6 +13,8 @@ public:
 	void UnRegister(Collider *coll);
 	void Update(float deltaTime, const Map& map);
 
+	//SRect GetBoundingBoxFromSegment(const SLineSegment& line) const;
+
 private:
 	std::vector<Collider*> mColliders;
 

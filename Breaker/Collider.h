@@ -16,6 +16,11 @@ public:
 		circle
 	};
 
+	virtual void Load() = 0;
+	virtual void Unload() = 0;
+	virtual void Update(float deltaTime, const Map& map) = 0;
+	virtual void Render(const SVector2& offset) = 0;
+
 	void SetBoundingBox(SRect rect)					{ mBoundingBox = rect; }		
 	SRect GetBoundingBox()							{ return mBoundingBox; }
 
