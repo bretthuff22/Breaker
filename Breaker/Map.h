@@ -20,6 +20,9 @@ public:
 
 	int GetWidth() const		{ return mColumns * mTileSize; }
 	int GetHeight() const		{ return mRows * mTileSize; }
+	int GetTileSize() const		{ return mTileSize; }
+
+	Tile* GetTiles() const		{ return mTiles; }
 
 private:
 	// Block copy construction and assignment operation

@@ -13,7 +13,8 @@ public:
 	enum Shape
 	{
 		box,
-		circle
+		circle, 
+		paddle
 	};
 
 	virtual void Load() = 0;

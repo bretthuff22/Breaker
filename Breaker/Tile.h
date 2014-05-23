@@ -4,13 +4,21 @@
 #include <SGE.h>
 using namespace SGE;
 
-class Tile
+#include "Collider.h"
+#include "Map.h"
+
+class Tile : public Collider
 {
 public: 
 	Tile();
 	~Tile();
 
 	SRect GetBoundingBox() const;
+
+	void Load() {};
+	void Unload() {};
+	void Update(float deltaTime, const Map& map) {};
+	void Render(const SVector2& offset) {};
 
 	const SVector2& GetPosition() const			{ return mPosition; }
 	int GetSize() const							{ return mSize; }

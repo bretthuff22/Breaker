@@ -11,7 +11,11 @@ public:
 
 	void Register(Collider *coll);
 	void UnRegister(Collider *coll);
+
+	void Load(const Map& map);
+	void Unload();
 	void Update(float deltaTime, const Map& map);
+	void Render(const SVector2& offset);
 
 	//SRect GetBoundingBoxFromSegment(const SLineSegment& line) const;
 

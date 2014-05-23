@@ -4,7 +4,7 @@ Paddle::Paddle()
 {
 	Collider::SetPosition(SVector2 (250.0f, 500.0f));
 	Collider::SetVelocity(SVector2 (0.0f, 0.0f));
-	Collider::SetShape(Collider::box);
+	Collider::SetShape(Collider::paddle);
 }
 
 Paddle::~Paddle()

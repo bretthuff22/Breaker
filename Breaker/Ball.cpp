@@ -81,24 +81,25 @@ void Ball::Update(float deltaTime, const Map& map)
 	//		mPosition.y += mVelocity.y*deltaTime;
 	//	}
 
-	//	// Check if Ball is outside the screen boundary
-	//	const int kWinHeight = IniFile_GetInt("WinHeight", 600);
+	// Check if Ball is outside the screen boundary
+	const int kWinHeight = IniFile_GetInt("WinHeight", 600);
 
-	//	if (mPosition.y >kWinHeight)
-	//	{
-	//		Kill();
-	//		mActive = false;
-	//	}
-	//}
-	//else
-	//{
-	//	if (Input_IsKeyDown(Keys::SPACE))
-	//	{
-	//		mActive = true;
-	//		SetRandomVelocity();
-	//		bool check = false;
-	//	}
-	//}
+	if (Collider::GetPosition().y >kWinHeight)
+	{
+		Kill();
+		mActive = false;
+	}
+	
+	if (mActive == false)
+	{
+		if (Input_IsKeyDown(Keys::SPACE))
+		{
+			mActive = true;
+			SetRandomVelocity();
+			bool check = false;
+		}
+	}
+	
 }
 void Ball::Render(const SVector2& offset)
 {

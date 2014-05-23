@@ -21,3 +21,4 @@ SRect Tile::GetBoundingBox() const
 		mPosition.y + mSize
 	);
 }
+
