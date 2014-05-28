@@ -2,8 +2,10 @@
 #define INCLUDED_MAP_H
 
 #include <SGE.h>
-using namespace SGE;
 #include "Tile.h"
+
+using namespace SGE;
+
 
 class Map
 {

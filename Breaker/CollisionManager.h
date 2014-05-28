@@ -1,7 +1,7 @@
 #ifndef _COLLISIONMANAGER__
 #define _COLLISIONMANAGER__
 
-#include "Collider.h"
+//#include "Collider.h"
 #include "Map.h"
 
 class CollisionManager

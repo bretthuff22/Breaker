@@ -2,9 +2,12 @@
 #define INCLUDED_GameplaySTATE_H
 
 #include "AppState.h"
-#include "Map.h"
+//#include "Map.h"
 #include "Paddle.h"
 #include "Ball.h"
+//#include "Collider.h"
+#include "CollisionManager.h"
+
 
 class GameplayState : public AppState
 {
@@ -24,9 +27,11 @@ public:
 
 private:
 	Map mMap;
-	Paddle mPaddle;
+	Paddle* mPaddle;
 	bool mBallInPlay;
-	Ball mBall;
+	Ball* mBall;
+
+	CollisionManager mCollManager;
 };
 
 #endif // #ifndef INCLUDED_GameplayState_H

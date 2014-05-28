@@ -3,6 +3,7 @@
 
 Ball::Ball()
 	: mActive(false)
+	, Collider(Collider::circle)
 {
 	Collider::SetPosition(SVector2(0.0f, 0.0f));
 	Collider::SetVelocity(SVector2 (0.0f, 0.0f));
@@ -14,14 +15,12 @@ void Ball::Load()
 {
 	mSprite.Load("ball.png");
 	CreateBoundingBox();
-	CollisionManager::Get().Register(this);
 }	
 void Ball::Unload()
 {
 	mSprite.Unload();
-	CollisionManager::Get().UnRegister(this);
 }
-void Ball::Update(float deltaTime, const Map& map)
+void Ball::Update(float deltaTime)
 {
 	//if (mActive)
 	//{
@@ -129,7 +128,7 @@ void Ball::Kill()
 
 void Ball::SetRandomVelocity()
 {
-	//float kSpeed = 200.0f;
-	//mVelocity.x = RandomFloat(-(kSpeed) + 1, (kSpeed -1));
-	//mVelocity.y = -1*sqrtf(kSpeed*kSpeed - mVelocity.x*mVelocity.x);
+	float kSpeed = 200.0f;
+	SVector2 vel(RandomFloat(-(kSpeed) + 1, (kSpeed -1)), -1*sqrtf(kSpeed*kSpeed - (Collider::GetVelocity().x*Collider::GetVelocity().x)));
+	Collider::SetVelocity(vel);
 }

@@ -2,14 +2,13 @@
 #define _COLLIDER__
 
 #include <SGE.h>
+
 using namespace SGE;
+
 
 class Collider
 {
 public:
-	Collider();
-	~Collider();
-
 	enum Shape
 	{
 		box,
@@ -17,25 +16,30 @@ public:
 		paddle
 	};
 
-	virtual void Load() = 0;
-	virtual void Unload() = 0;
-	virtual void Update(float deltaTime, const Map& map) = 0;
-	virtual void Render(const SVector2& offset) = 0;
+	Collider(Shape shape) : mShape(shape) {};
+	~Collider(){};
+
+	virtual void Load(){};
+	virtual void Unload(){};
+	virtual void Update(float deltaTime){};
+	virtual void Render(const SVector2& offset){};
 
 	void SetBoundingBox(SRect rect)					{ mBoundingBox = rect; }		
 	SRect GetBoundingBox()							{ return mBoundingBox; }
 
-	virtual void CreateBoundingBox() const = 0;
+	//virtual void CreateBoundingBox() const = 0;
 
 	void SetShape(Shape shape)						{ mShape = shape; }
 
-	int GetShape()									{ return mShape; }
+	Shape GetShape()									{ return mShape; }
 
 	const SVector2& GetPosition() const				{ return mPosition;}
 	const SVector2& GetVelocity() const				{ return mVelocity;}
 
-	void SetPosition(const SVector2& pos)			{ mPosition = pos;}
+	void SetPosition(const SVector2& pos)			{ mPosition = pos; }
 	void SetVelocity(const SVector2& vel)			{ mVelocity = vel; }
+
+	virtual void CreateBoundingBox() = 0;
 	
 private:
 	SRect mBoundingBox;

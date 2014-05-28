@@ -4,7 +4,6 @@
 #include <SGE.h>
 using namespace SGE;
 
-#include "Map.h"
 #include "Collider.h"
 #include "CollisionManager.h"
 
@@ -14,10 +13,11 @@ public:
 	Paddle();
 	~Paddle();
 
-	void CreateBoundingBox();
+	virtual void CreateBoundingBox();
+	
 	void Load();
 	void Unload();
-	void Update(float deltaTime, const Map& map);
+	void Update(float deltaTime);
 	void Render(const SVector2& offset);
 
 

@@ -3,7 +3,8 @@
 GameplayState::GameplayState(GameContext& gc)
 	: AppState(gc)
 {
-
+	mPaddle = new Paddle();
+	mBall = new Ball();
 }
 	
 GameplayState::~GameplayState()
@@ -26,24 +27,34 @@ void GameplayState::Load()
 		//mMap.Load("mariolevel.txt", "mariopack.txt");
 	}
 
-	mPaddle.Load();
-	mPaddle.SetPosition(SVector2(400.0f, 550.0f));
-	mBall.Load();
-	mBall.SetPosition(SVector2(400.0f, 484.0f));
+	
+	mPaddle->SetPosition(SVector2(400.0f, 550.0f));
+	mBall->SetPosition(SVector2(400.0f, 484.0f));
+
+	mCollManager.Register(mPaddle);
+	mCollManager.Register(mBall);
+	mCollManager.Load(mMap);
 }
 
 void GameplayState::Unload()
 {
 	mMap.Unload();
-	mPaddle.Unload();
-	mBall.Unload();
+	mCollManager.Unload();
+	mCollManager.UnRegister(mPaddle);
+	mPaddle->Unload();
+	mCollManager.UnRegister(mBall);
+	mBall->Unload();
+	
 }
 
 GameState GameplayState::Update(float deltaTime)
 {
+
 	mMap.Update(deltaTime);
-	mPaddle.Update(deltaTime, mMap);
-	mBall.Update(deltaTime, mMap);
+	mPaddle->Update(deltaTime);
+	mBall->Update(deltaTime);
+
+	mCollManager.Update(deltaTime, mMap);
 	
 	GameState nextState = GameState::Invalid;
 
@@ -59,7 +70,7 @@ void GameplayState::Render()
 	const int kScreenWidth = IniFile_GetInt("WinWidth", 800);
 	const int kScreenHeight = IniFile_GetInt("WinHeight", 600);
 
-	SVector2 target = mPaddle.GetPosition();
+	SVector2 target = mPaddle->GetPosition();
 	SVector2 offset;
 	offset.x = (kScreenWidth* 0.5f) - target.x;
 	offset.x = Clamp(offset.x, (float)kScreenWidth - mMap.GetWidth(), 0.0f);
@@ -67,8 +78,9 @@ void GameplayState::Render()
 	offset.y = Clamp(offset.y, (float)kScreenHeight - mMap.GetHeight(), 0.0f);
 
 	mMap.Render(offset);
-	mPaddle.Render(offset);
-	mBall.Render(offset);
+	mPaddle->Render(offset);
+	mBall->Render(offset);
+	mCollManager.Render(offset);
 }
 
 

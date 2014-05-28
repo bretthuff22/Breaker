@@ -1,9 +1,10 @@
 #include "Tile.h"
 
 Tile::Tile()
-	: mPosition(0.0f, 0.0f)
+	: Collider(Collider::box)
+	, mPosition(0.0f, 0.0f)
 	, mSize(0)
-	, mType(0)
+	, mSpriteType(0)
 {
 }
 
@@ -11,14 +12,13 @@ Tile::~Tile()
 {
 }
 
-SRect Tile::GetBoundingBox() const
+void Tile::CreateBoundingBox()
 {
-	return SRect
+	Collider::SetBoundingBox(SRect
 	(
 		mPosition.x,
 		mPosition.y, 
 		mPosition.x + mSize,
 		mPosition.y + mSize
-	);
+	));
 }
-

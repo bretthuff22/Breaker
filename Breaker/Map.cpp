@@ -72,7 +72,7 @@ void Map::Render(const SVector2& offset)
 		{
 			const int i = x + (y*mColumns);
 			const SVector2 pos = mTiles[i].GetPosition();
-			const int type = mTiles[i].GetType();
+			const int type = mTiles[i].GetSpriteType();
 			SVector2 renderPos = pos + offset;
 			mSprites[type].SetPosition(renderPos);
 			mSprites[type].Render();
@@ -152,8 +152,8 @@ bool Map::LoadLevel(const char* pLevelFile)
 			const float posY = static_cast<float>(y*mTileSize);
 			mTiles[i].SetPosition(SVector2(posX, posY));
 			mTiles[i].SetSize(mTileSize);
-			mTiles[i].SetType(fgetc(pFile) - '0'); // (-'0') converts to int
-			mTiles[i].SetWalkable(mTiles[i].GetType() == 0);
+			mTiles[i].SetSpriteType(fgetc(pFile) - '0'); // (-'0') converts to int
+			mTiles[i].SetWalkable(mTiles[i].GetSpriteType() == 0);
 		}
 		fgetc(pFile);
 	}

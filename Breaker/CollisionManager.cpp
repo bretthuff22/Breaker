@@ -33,9 +33,14 @@ void CollisionManager::Load(const Map& map)
 	Tile* tiles = map.GetTiles();
 
 	const int size = map.GetHeight() * map.GetWidth()/(map.GetTileSize()*map.GetTileSize());
+
 	for (int i = 0; i < size; ++i)
 	{
 		// Add tiles to mColliders
+		if (!tiles[i].IsWalkable())
+		{
+			mColliders.push_back(&tiles[i]);
+		}
 	}
 
 	// Add bricks to mColliders
@@ -51,12 +56,15 @@ void CollisionManager::Load(const Map& map)
 
 void CollisionManager::Unload()
 {
+	int i = mColliders.size();
 	for (std::vector<Collider*>::iterator it = mColliders.begin(); it != mColliders.end(); ++it)
 	{
 		Collider* unload = *it;
+		//UnRegister(unload);
 		unload->Unload();
 	}
 }
+
 	
 void CollisionManager::Update(float deltaTime, const Map& map)
 {
@@ -64,14 +72,40 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 
 	for (std::vector<Collider*>::iterator it = mColliders.begin(); it != mColliders.end(); ++it)
 	{
-		Collider* shape = *it;
-		if (shape->GetShape() ==1)
+		Collider* temp = *it;
+		if (temp->GetShape() == Collider::Shape::circle)
 		{
-			balls.push_back(*it);
+			balls.push_back(temp);
+		}
+
+		if (temp->GetShape() == Collider::Shape::paddle)
+		{
+			const float kSpeed = 800.0f;
+
+			//Check horizontal movement
+			if (Input_IsKeyDown(Keys::RIGHT))
+			{
+				temp->SetPosition(SVector2(temp->GetPosition().x + kSpeed * deltaTime, temp->GetPosition().y));
+				const int kWinWidth = IniFile_GetInt("WinWidth", 800);
+				// Right collision
+				if (temp->GetPosition().x > kWinWidth - 32)
+				{
+					temp->SetPosition(SVector2(kWinWidth - 32, temp->GetPosition().y));
+				}
+			}
+			else if (Input_IsKeyDown(Keys::LEFT))
+			{
+				temp->SetPosition(SVector2(temp->GetPosition().x - kSpeed * deltaTime, temp->GetPosition().y));
+				// Left collision
+				if (temp->GetPosition().x < 32)
+				{
+					temp->SetPosition(SVector2(32, temp->GetPosition().y));
+				}
+			}
 		}
 	}
 
-	std::vector<Collider*> ballsMoved;
+	//std::vector<Collider*> ballsMoved;
 
 	for (std::vector<Collider*>::iterator it = balls.begin(); it != balls.end(); ++it)
 	{
@@ -85,11 +119,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 			{
 				Collider* other = *itOther;
 
-				if (other->GetShape == other->box)
+				if (other->GetShape() == Collider::box)
 				{
-
 					// Check left/right collision
-					newbb = bb + SVector2(ball->GetVelocity().x, 0.0f);
+					newbb = bb + SVector2(ball->GetVelocity().x*deltaTime, 0.0f);
 
 					// Right collision
 					if (other->GetBoundingBox().IsValid() 
@@ -97,11 +130,11 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						&& other->GetBoundingBox().max.y < newbb.min.y 
 						&& other->GetBoundingBox().min.y > newbb.max.y)
 					{
-						ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().min.x - bb.max.x) - 1.0f, ball->GetPosition().y));
+						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().min.x - bb.max.x) - 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
 
 						// DESTROY IF BRICK
-						other->Update(deltaTime, map);
+						other->Update(deltaTime);
 					}
 					// Left collision
 					else if (other->GetBoundingBox().IsValid() 
@@ -109,19 +142,16 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 							&& other->GetBoundingBox().max.y < newbb.min.y 
 							&& other->GetBoundingBox().min.y > newbb.max.y)
 					{
-						ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().max.x - bb.min.x) + 1.0f, ball->GetPosition().y));
+						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().max.x - bb.min.x) + 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
+						
 						// DESTROY IF BRICK
-						other->Update(deltaTime, map);
+						other->Update(deltaTime);
 					}
-					else
-					{
-						ball->SetPosition(SVector2(ball->GetPosition().x + (int)ball->GetVelocity().x, ball->GetPosition().y));
-					}
-
-
+					
+	
 					// Check top/bottom intersection
-					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y);
+					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y*deltaTime);
 
 					// Bottom collision
 					if(other->GetBoundingBox().IsValid() 
@@ -129,10 +159,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						&& other->GetBoundingBox().min.x > newbb.max.x 
 						&& other->GetBoundingBox().max.x < newbb.min.x)
 					{
-						ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
+						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
 						// DESTROY IF BRICK
-						other->Update(deltaTime, map);
+						other->Update(deltaTime);
 					}
 
 					// Top collision
@@ -141,17 +171,14 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 							&& other->GetBoundingBox().min.x > newbb.max.x 
 							&& other->GetBoundingBox().max.x < newbb.min.x)
 					{
-						ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().max.y - bb.min.y - 1.0f)));
+						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().max.y - bb.min.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
 						// DESTROY IF BRICK
-						other->Update(deltaTime, map);
+						other->Update(deltaTime);
 					}
-					else
-					{
-						ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y + (int)ball->GetVelocity().y));
-					}
+					
 				}
-				else if (other->GetShape() == other->paddle)
+				else if (other->GetShape() == Collider::paddle)
 				{
 					// Check bottom intersection
 					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y);
@@ -162,15 +189,17 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						&& other->GetBoundingBox().min.x > newbb.max.x 
 						&& other->GetBoundingBox().max.x < newbb.min.x)
 					{
-						ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
+						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
 					}
-					other->Update(deltaTime, map);
+					other->Update(deltaTime);
 				}
 			}
+
+			ball->SetPosition(SVector2(ball->GetPosition().x + (int)ball->GetVelocity().x * deltaTime, ball->GetPosition().y + (int)ball->GetVelocity().y * deltaTime ));
 		}
 
-		ball->Update(deltaTime, map);
+		ball->Update(deltaTime);
 
 		// DELETE BALL IF IT IS OFF THE SCREEN
 		const int kWinHeight = IniFile_GetInt("WinHeight", 600);
@@ -187,15 +216,18 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 				}
 			}
 		}
-
 	}
 
-
+	
 	// Move
 	// Check collision
 	// Resolve
 }
 
+void CollisionManager::Render(const SVector2& offset)
+{
+
+}
 
 /*SRect CollisionManager::GetBoundingBoxFromSegment(const SLineSegment& line) const
 {
