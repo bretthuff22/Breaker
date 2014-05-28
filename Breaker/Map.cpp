@@ -152,6 +152,7 @@ bool Map::LoadLevel(const char* pLevelFile)
 			const float posY = static_cast<float>(y*mTileSize);
 			mTiles[i].SetPosition(SVector2(posX, posY));
 			mTiles[i].SetSize(mTileSize);
+			mTiles[i].CreateBoundingBox();
 			mTiles[i].SetSpriteType(fgetc(pFile) - '0'); // (-'0') converts to int
 			mTiles[i].SetWalkable(mTiles[i].GetSpriteType() == 0);
 		}

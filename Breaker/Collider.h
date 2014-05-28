@@ -36,7 +36,7 @@ public:
 	const SVector2& GetPosition() const				{ return mPosition;}
 	const SVector2& GetVelocity() const				{ return mVelocity;}
 
-	void SetPosition(const SVector2& pos)			{ mPosition = pos; }
+	void SetPosition(const SVector2& pos);
 	void SetVelocity(const SVector2& vel)			{ mVelocity = vel; }
 
 	virtual void CreateBoundingBox() = 0;

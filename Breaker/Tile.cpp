@@ -2,9 +2,9 @@
 
 Tile::Tile()
 	: Collider(Collider::box)
-	, mPosition(0.0f, 0.0f)
 	, mSize(0)
 	, mSpriteType(0)
+	, mWalkable(true)
 {
 }
 
@@ -16,9 +16,9 @@ void Tile::CreateBoundingBox()
 {
 	Collider::SetBoundingBox(SRect
 	(
-		mPosition.x,
-		mPosition.y, 
-		mPosition.x + mSize,
-		mPosition.y + mSize
+		Collider::GetPosition().x ,
+		Collider::GetPosition().y - mSize/2, 
+		Collider::GetPosition().x + mSize,
+		Collider::GetPosition().y + mSize/2
 	));
 }

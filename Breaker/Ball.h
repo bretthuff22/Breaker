@@ -22,7 +22,7 @@ public:
 	void Kill();
 
 	// SCircle GetBoundingCircle() const	{ return SCircle(mPosition, 8.0f); } // approx radius
-	virtual void CreateBoundingBox()		{ Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - 64.0f, Collider::GetPosition().y - 32.0f, Collider::GetPosition().x + 64.0f, Collider::GetPosition().y	)); }
+	virtual void CreateBoundingBox()		{ Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - 8.0f, Collider::GetPosition().y - 16.0f, Collider::GetPosition().x + 8.0f, Collider::GetPosition().y	)); }
 	
 	void SetAlive(bool alive)			{ mActive = alive; }
 	bool IsAlive() const				{ return mActive; }

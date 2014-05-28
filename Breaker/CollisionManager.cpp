@@ -113,8 +113,9 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 		
 		if (ball->GetVelocity().x != 0 && ball->GetVelocity().y != 0)
 		{
+			ball->CreateBoundingBox();
 			SRect bb = ball->GetBoundingBox();
-			SRect newbb = bb + SVector2(ball->GetVelocity().x, 0.0f);
+			SRect newbb = bb + SVector2(ball->GetVelocity().x * deltaTime, 0.0f);
 			for (std::vector<Collider*>::iterator itOther = mColliders.begin(); itOther != mColliders.end(); ++itOther)
 			{
 				Collider* other = *itOther;
@@ -125,10 +126,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 					newbb = bb + SVector2(ball->GetVelocity().x*deltaTime, 0.0f);
 
 					// Right collision
-					if (other->GetBoundingBox().IsValid() 
-						&& other->GetBoundingBox().min.x < newbb.max.x 
-						&& other->GetBoundingBox().max.y < newbb.min.y 
-						&& other->GetBoundingBox().min.y > newbb.max.y)
+					if (other->GetBoundingBox().min.x < newbb.max.x 
+						&& other->GetBoundingBox().max.x > newbb.min.x 
+						&& (	( other->GetBoundingBox().min.y < newbb.min.y && other->GetBoundingBox().max.y > newbb.min.y ) 
+							||	( other->GetBoundingBox().min.y < newbb.max.y && other->GetBoundingBox().max.y > newbb.max.y ) ) )
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().min.x - bb.max.x) - 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
@@ -137,10 +138,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						other->Update(deltaTime);
 					}
 					// Left collision
-					else if (other->GetBoundingBox().IsValid() 
-							&& other->GetBoundingBox().max.x > newbb.min.x 
-							&& other->GetBoundingBox().max.y < newbb.min.y 
-							&& other->GetBoundingBox().min.y > newbb.max.y)
+					else if (other->GetBoundingBox().max.x > newbb.min.x 
+							&& other->GetBoundingBox().min.x < newbb.max.x 
+							&& (	( other->GetBoundingBox().min.y < newbb.min.y && other->GetBoundingBox().max.y > newbb.min.y ) 
+							||		( other->GetBoundingBox().min.y < newbb.max.y && other->GetBoundingBox().max.y > newbb.max.y ) ) )
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().max.x - bb.min.x) + 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
@@ -154,10 +155,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y*deltaTime);
 
 					// Bottom collision
-					if(other->GetBoundingBox().IsValid() 
-						&& other->GetBoundingBox().min.y < newbb.max.y 
-						&& other->GetBoundingBox().min.x > newbb.max.x 
-						&& other->GetBoundingBox().max.x < newbb.min.x)
+					if(other->GetBoundingBox().min.y < newbb.max.y
+						&& other->GetBoundingBox().max.y > newbb.max.y
+						&& (	( other->GetBoundingBox().min.x < newbb.min.x && other->GetBoundingBox().max.x > newbb.min.x ) 
+							||	( other->GetBoundingBox().min.x < newbb.max.x && other->GetBoundingBox().max.x > newbb.max.x ) ) )
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
@@ -166,10 +167,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 					}
 
 					// Top collision
-					else if(other->GetBoundingBox().IsValid() 
-							&& other->GetBoundingBox().max.y > newbb.min.y
-							&& other->GetBoundingBox().min.x > newbb.max.x 
-							&& other->GetBoundingBox().max.x < newbb.min.x)
+					else if(other->GetBoundingBox().max.y > newbb.min.y
+							&& other->GetBoundingBox().max.y < newbb.max.y
+							&& (	( other->GetBoundingBox().min.x < newbb.min.x && other->GetBoundingBox().max.x > newbb.min.x ) 
+								||	( other->GetBoundingBox().min.x < newbb.max.x && other->GetBoundingBox().max.x > newbb.max.x ) ) )
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().max.y - bb.min.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
