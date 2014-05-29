@@ -38,12 +38,13 @@ void GameplayState::Load()
 
 void GameplayState::Unload()
 {
-	mMap.Unload();
+	
 	mCollManager.Unload();
 	mCollManager.UnRegister(mPaddle);
 	mPaddle->Unload();
 	mCollManager.UnRegister(mBall);
 	mBall->Unload();
+	mMap.Unload();
 	
 }
 

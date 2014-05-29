@@ -12,6 +12,7 @@ public:
 	enum Shape
 	{
 		box,
+		brick,
 		circle, 
 		paddle
 	};

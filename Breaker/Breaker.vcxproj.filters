@@ -12,6 +12,7 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Brick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Paddle.h" />
@@ -25,6 +26,7 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="Brick.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

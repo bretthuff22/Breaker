@@ -16,7 +16,8 @@ void Paddle::CreateBoundingBox()
 	Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - 64.0f,
 										Collider::GetPosition().y - 32.0f, 
 										Collider::GetPosition().x + 64.0f,
-										Collider::GetPosition().y	));
+										Collider::GetPosition().y	
+									));
 }
 
 void Paddle::Load()

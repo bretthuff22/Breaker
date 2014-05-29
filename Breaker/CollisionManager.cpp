@@ -120,7 +120,7 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 			{
 				Collider* other = *itOther;
 
-				if (other->GetShape() == Collider::box)
+				if (other->GetShape() == Collider::box || other->GetShape() == Collider::brick)
 				{
 					// Check left/right collision
 					newbb = bb + SVector2(ball->GetVelocity().x*deltaTime, 0.0f);
@@ -135,7 +135,11 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
 
 						// DESTROY IF BRICK
-						other->Update(deltaTime);
+						if (other->GetShape() == Collider::brick)
+						{
+							UnRegister(other);
+							// continue?
+						}
 					}
 					// Left collision
 					else if (other->GetBoundingBox().max.x > newbb.min.x 
@@ -147,7 +151,11 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
 						
 						// DESTROY IF BRICK
-						other->Update(deltaTime);
+						if (other->GetShape() == Collider::brick)
+						{
+							UnRegister(other);
+							// continue?
+						}
 					}
 					
 	
@@ -162,8 +170,13 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
+						
 						// DESTROY IF BRICK
-						other->Update(deltaTime);
+						if (other->GetShape() == Collider::brick)
+						{
+							UnRegister(other);
+							// continue?
+						}
 					}
 
 					// Top collision
@@ -175,25 +188,58 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().max.y - bb.min.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
 						// DESTROY IF BRICK
-						other->Update(deltaTime);
+						if (other->GetShape() == Collider::brick)
+						{
+							UnRegister(other);
+							// continue?
+						}
 					}
 					
 				}
 				else if (other->GetShape() == Collider::paddle)
 				{
 					// Check bottom intersection
-					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y);
+					newbb =  bb + SVector2(0.0f, ball->GetVelocity().y*deltaTime);
+					other->CreateBoundingBox();
 
 					// Bottom collision
-					if(other->GetBoundingBox().IsValid() 
-						&& other->GetBoundingBox().min.y < newbb.max.y 
-						&& other->GetBoundingBox().min.x > newbb.max.x 
-						&& other->GetBoundingBox().max.x < newbb.min.x)
+					if(other->GetBoundingBox().min.y < newbb.max.y
+						&& other->GetBoundingBox().max.y > newbb.max.y
+						&& (	( other->GetBoundingBox().min.x < newbb.min.x && other->GetBoundingBox().max.x > newbb.min.x ) 
+							||	( other->GetBoundingBox().min.x < newbb.max.x && other->GetBoundingBox().max.x > newbb.max.x ) ) )
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
-						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
+						float paddleCenter = other->GetPosition().x;
+						float ballCenter = ball->GetPosition().x;
+						float ballDistFromCenter = ballCenter - paddleCenter;
+						float ballQuadrant = ballDistFromCenter/(other->GetBoundingBox().GetWidth()/2.0f);
+
+						float magnitude = ball->GetVelocity().Length();
+
+						if (abs(ballQuadrant) < 0.25f)
+						{
+							ball->SetVelocity(SVector2(5.0f*magnitude/13.0f, -12.0f*magnitude/13.0f));
+						}
+						else if (abs(ballQuadrant) < 0.50f)
+						{
+							ball->SetVelocity(SVector2(3.0f*magnitude/5.0f, -4.0f*magnitude/5.0f));
+						}
+						else if (abs(ballQuadrant) < 0.90f)
+						{
+							ball->SetVelocity(SVector2(4.0f*magnitude/5.0f, -3.0f*magnitude/5.0f));
+						}
+						else
+						{
+							ball->SetVelocity(SVector2(12.0f*magnitude/13.0f, -5.0f*magnitude/13.0f));
+						}
+
+						if (ballQuadrant < 0.0f)
+						{
+							ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
+						}
+						
+
 					}
-					other->Update(deltaTime);
 				}
 			}
 
