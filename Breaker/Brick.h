@@ -17,14 +17,15 @@ public:
 
 	//SRect GetBoundingBox() const;
 
-	//const SVector2& GetPosition() const			{ return mPosition; }
-	int GetSize() const							{ return mSize; }
+	//const SVector2& GetPosition() const		{ return mPosition; }
+	int GetWidth() const						{ return mWidth; }
+	int GetHeight() const						{ return mHeight; }
 	bool IsWalkable() const						{ return mWalkable; }
 	int GetSpriteType() const					{ return mSpriteType; }
 
 
 	//void SetPosition(const SVector2& pos)		{ mPosition = pos; }
-	void SetSize(int size)						{ mSize = size; }
+	void SetSize(int width, int height)			{ mWidth = width; mHeight = height;}
 	void SetSpriteType(int type)				{ mSpriteType = type; }
 	void SetWalkable(bool walkable)				{ mWalkable = walkable; }
 
@@ -32,7 +33,8 @@ public:
 
 private:
 	//SVector2 mPosition;
-	int mSize;
+	int mWidth;
+	int mHeight;
 	int mSpriteType;
 	bool mWalkable;
 };

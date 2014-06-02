@@ -113,7 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="level01.txt" />
+    <Text Include="level01bricks.txt" />
     <Text Include="texturepack01.txt" />
+    <Text Include="texturepackbricks01.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sge.ini" />

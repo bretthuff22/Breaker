@@ -2,7 +2,8 @@
 
 Brick::Brick()
 	: Collider(Collider::brick)
-	, mSize(0)
+	, mWidth(0)
+	, mHeight(0)
 	, mSpriteType(0)
 	, mWalkable(true)
 {
@@ -18,8 +19,8 @@ void Brick::CreateBoundingBox()
 	Collider::SetBoundingBox(SRect
 	(
 		Collider::GetPosition().x ,
-		Collider::GetPosition().y - mSize/2, 
-		Collider::GetPosition().x + mSize,
-		Collider::GetPosition().y + mSize/2
+		Collider::GetPosition().y - mHeight/2.0f, 
+		Collider::GetPosition().x + mWidth,
+		Collider::GetPosition().y + mHeight/2.0f
 	));
 }

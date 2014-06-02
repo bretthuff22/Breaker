@@ -9,6 +9,13 @@ Map::Map()
 	, mRows(0)
 	, mTileSize(0)
 	, mSpriteCount(0)
+	, mBricks(nullptr)
+	, mBrickSprites(nullptr)
+	, mBrickColumns(0)
+	, mBrickRows(0)
+	, mBrickWidth(0)
+	, mBrickHeight(0)
+	, mBrickSpriteCount(0)
 {
 }
 
@@ -16,13 +23,13 @@ Map::~Map()
 {
 }
 
-void Map::Load(const char* pLevelFile, const char* pTexturePack)
+void Map::Load(const char* pLevelFile, const char* pLevelBrickFile, const char* pTexturePack, const char* pBrickTexturePack)
 {
 	// Clean up before we start loading anything
 	Unload();
 
 	// Load level data
-	if(!LoadLevel(pLevelFile))
+	if(!LoadLevel(pLevelFile, pLevelBrickFile))
 	{
 		LogError("Failed to load level file %s.", pLevelFile);
 		Unload();
@@ -30,7 +37,7 @@ void Map::Load(const char* pLevelFile, const char* pTexturePack)
 	}
 
 	// Load texture pack
-	if(!LoadTexturePack(pTexturePack))
+	if(!LoadTexturePack(pTexturePack, pBrickTexturePack))
 	{
 		LogError("Failed to load texture pack %s.", pTexturePack);
 		Unload();
@@ -52,12 +59,28 @@ void Map::Unload()
 		delete[] mSprites;
 		mSprites = nullptr;
 	}
+	if(mBricks!= nullptr)
+	{
+		delete[] mBricks;
+		mBricks = nullptr;
+	}
+	if(mBrickSprites != nullptr)
+	{
+		delete[] mBrickSprites;
+		mBrickSprites = nullptr;
+	}
 
 	// Reset params
 	mColumns = 0;
 	mRows = 0;
 	mTileSize = 0;
 	mSpriteCount = 0;
+
+	mBrickColumns = 0;
+	mBrickRows = 0;
+	mBrickWidth = 0;
+	mBrickHeight = 0;
+	mBrickSpriteCount = 0;
 }
 
 void Map::Update(float deltaTime)
@@ -76,6 +99,20 @@ void Map::Render(const SVector2& offset)
 			SVector2 renderPos = pos + offset;
 			mSprites[type].SetPosition(renderPos);
 			mSprites[type].Render();
+		}
+	}
+
+
+	for(int y = 0; y < mBrickRows; ++y)
+	{
+		for(int x = 0; x < mBrickColumns; ++x)
+		{
+			const int i = x + (y*mBrickColumns);
+			const SVector2 pos = mBricks[i].GetPosition();
+			const int type = mBricks[i].GetSpriteType();
+			SVector2 renderPos = pos + offset;
+			mBrickSprites[type].SetPosition(renderPos);
+			mBrickSprites[type].Render();
 		}
 	}
 }
@@ -118,8 +155,9 @@ SRect Map::GetBoundingBoxFromSegment(const SLineSegment& line) const
 	return region;
 }
 
-bool Map::LoadLevel(const char* pLevelFile)
+bool Map::LoadLevel(const char* pLevelFile, const char* pLevelBrickFile)
 {
+	// LOAD BACKGROUND AND INVISIBLE BORDER
 	FILE* pFile = nullptr;
 	fopen_s(&pFile, pLevelFile, "r");
 	if (pFile == nullptr)
@@ -154,18 +192,61 @@ bool Map::LoadLevel(const char* pLevelFile)
 			mTiles[i].SetSize(mTileSize);
 			mTiles[i].CreateBoundingBox();
 			mTiles[i].SetSpriteType(fgetc(pFile) - '0'); // (-'0') converts to int
-			mTiles[i].SetWalkable(mTiles[i].GetSpriteType() == 0);
+			mTiles[i].SetWalkable(mTiles[i].GetSpriteType() != 0);
 		}
 		fgetc(pFile);
 	}
 
 	// Close file
 	fclose(pFile);
+
+	// LOAD BRICKS
+	FILE* pBrickFile = nullptr;
+	fopen_s(&pBrickFile, pLevelBrickFile, "r");
+	if (pBrickFile == nullptr)
+	{
+		return false;
+	}
+
+	// Read map dimensions
+	int scanned = 0;
+	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickColumns);		// * reads and discards rather than store
+	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickRows);
+	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickWidth);
+	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickHeight);
+	if (scanned < 4)
+	{
+		fclose(pBrickFile);
+		return false;
+	}
+
+	// Create brick buffer
+	mBricks = new Brick[mBrickColumns*mBrickRows];
+
+	// Parse brick data
+	fgetc(pBrickFile);
+	for(int y = 0; y < mBrickRows; ++y)
+	{
+		for(int x = 0; x < mBrickColumns; ++x)
+		{
+			const int i = x + (y*mBrickColumns);
+			const float posX = static_cast<float>(x*mBrickWidth);
+			const float posY = static_cast<float>(y*mBrickHeight);
+			mBricks[i].SetPosition(SVector2(posX, posY));
+			mBricks[i].SetSize(mBrickWidth, mBrickHeight);
+			mBricks[i].CreateBoundingBox();
+			mBricks[i].SetSpriteType(fgetc(pBrickFile) - '0'); // (-'0') converts to int
+			mBricks[i].SetWalkable(mBricks[i].GetSpriteType() == 0);
+		}
+		fgetc(pBrickFile);
+	}
+
 	return true;
 }
 	
-bool Map::LoadTexturePack(const char* pTexturePack)
+bool Map::LoadTexturePack(const char* pTexturePack, const char* pBrickTexturePack)
 {
+	// LOAD BACKGROUND TEXTURES
 	FILE* pFile = nullptr;
 	fopen_s(&pFile, pTexturePack, "r");
 	if (pFile == nullptr)
@@ -195,5 +276,39 @@ bool Map::LoadTexturePack(const char* pTexturePack)
 
 	// Close file
 	fclose(pFile);
+
+
+	// LOAD BRICK TEXTURES
+	FILE* pBrickFile = nullptr;
+	fopen_s(&pBrickFile, pBrickTexturePack, "r");
+	if (pBrickFile == nullptr)
+	{
+		return false;
+	}
+
+	// Read map textures
+	int scanned = 0;
+	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickSpriteCount);
+	if (scanned < 1)
+	{
+		fclose(pBrickFile);
+		return false;
+	}
+
+	// Create texture buffer
+	mBrickSprites = new SGE_Sprite[mBrickSpriteCount];
+
+	// Parse texture data
+	for(int i = 0; i < mBrickSpriteCount; ++i)
+	{
+		char buffer[128];
+		fscanf_s(pBrickFile, "%s", buffer, 128);
+		mBrickSprites[i].Load(buffer);
+	}
+
+	// Close file
+	fclose(pBrickFile);
+
+
 	return true;
 }

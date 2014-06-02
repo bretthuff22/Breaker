@@ -40,6 +40,12 @@
     <Text Include="texturepack01.txt">
       <Filter>Data</Filter>
     </Text>
+    <Text Include="level01bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="texturepackbricks01.txt">
+      <Filter>Data</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="sge.ini">

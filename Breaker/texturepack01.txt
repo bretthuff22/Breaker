@@ -1,3 +1,6 @@
-Count: 2
-grass_2.png
-stone.png
+Count: 5
+space0.png
+space1.png
+space2.png
+space3.png
+space4.png

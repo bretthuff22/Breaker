@@ -1,0 +1,3 @@
+Count: 2
+brick_null.png
+brick_red.png
