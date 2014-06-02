@@ -4,7 +4,6 @@ Brick::Brick()
 	: Collider(Collider::brick)
 	, mWidth(0)
 	, mHeight(0)
-	, mSpriteType(0)
 	, mWalkable(true)
 {
 }

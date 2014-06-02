@@ -25,7 +25,14 @@ public:
 	int GetHeight() const		{ return mRows * mTileSize; }
 	int GetTileSize() const		{ return mTileSize; }
 
+	int GetBrickWidth() const	{ return mBrickColumns * mBrickWidth; }
+	int GetBrickHeight() const	{ return mBrickRows * mBrickHeight; }
+	int GetBrickSize() const	{ return mBrickWidth * mBrickHeight; }
+
 	Tile* GetTiles() const		{ return mTiles; }
+	Brick* GetBricks() const	{ return mBricks; }
+
+	void SetBrickType(int index, int type);
 
 private:
 	// Block copy construction and assignment operation

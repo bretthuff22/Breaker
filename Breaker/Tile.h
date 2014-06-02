@@ -19,12 +19,12 @@ public:
 	//const SVector2& GetPosition() const			{ return mPosition; }
 	int GetSize() const							{ return mSize; }
 	bool IsWalkable() const						{ return mWalkable; }
-	int GetSpriteType() const					{ return mSpriteType; }
+	//int GetSpriteType() const					{ return mSpriteType; }
 
 
 	//void SetPosition(const SVector2& pos)		{ mPosition = pos; }
 	void SetSize(int size)						{ mSize = size; }
-	void SetSpriteType(int type)				{ mSpriteType = type; }
+	//void SetSpriteType(int type)				{ mSpriteType = type; }
 	void SetWalkable(bool walkable)				{ mWalkable = walkable; }
 
 	virtual void CreateBoundingBox();
@@ -32,7 +32,6 @@ public:
 private:
 	//SVector2 mPosition;
 	int mSize;
-	int mSpriteType;
 	bool mWalkable;
 };
 

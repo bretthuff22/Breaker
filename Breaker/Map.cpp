@@ -209,7 +209,7 @@ bool Map::LoadLevel(const char* pLevelFile, const char* pLevelBrickFile)
 	}
 
 	// Read map dimensions
-	int scanned = 0;
+	scanned = 0;
 	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickColumns);		// * reads and discards rather than store
 	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickRows);
 	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickWidth);
@@ -287,7 +287,7 @@ bool Map::LoadTexturePack(const char* pTexturePack, const char* pBrickTexturePac
 	}
 
 	// Read map textures
-	int scanned = 0;
+	scanned = 0;
 	scanned += fscanf_s(pBrickFile, "%*s %d", &mBrickSpriteCount);
 	if (scanned < 1)
 	{
@@ -311,4 +311,9 @@ bool Map::LoadTexturePack(const char* pTexturePack, const char* pBrickTexturePac
 
 
 	return true;
+}
+
+void Map::SetBrickType(int index, int type)
+{
+	mBricks[index].SetSpriteType(type);
 }

@@ -3,7 +3,6 @@
 Tile::Tile()
 	: Collider(Collider::box)
 	, mSize(0)
-	, mSpriteType(0)
 	, mWalkable(true)
 {
 }

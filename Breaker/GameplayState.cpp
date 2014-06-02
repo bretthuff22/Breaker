@@ -16,7 +16,7 @@ void GameplayState::Load()
 {
 	if (mGameContext.GetLevel()==0)
 	{
-		mMap.Load("level01.txt", "texturepack01.txt");
+		mMap.Load("level01.txt", "level01bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
 	}
 	else if (mGameContext.GetLevel()==1)
 	{

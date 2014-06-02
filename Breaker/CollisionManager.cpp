@@ -22,6 +22,10 @@ void CollisionManager::UnRegister(Collider *coll)
 	{
 		if (*it == coll)
 		{
+			if (coll->GetShape() == Collider::brick)
+			{
+				coll->SetSpriteType(0);
+			}
 			mColliders.erase(it);
 			return;
 		}
@@ -30,6 +34,7 @@ void CollisionManager::UnRegister(Collider *coll)
 
 void CollisionManager::Load(const Map& map)
 {
+	//TILES
 	Tile* tiles = map.GetTiles();
 
 	const int size = map.GetHeight() * map.GetWidth()/(map.GetTileSize()*map.GetTileSize());
@@ -43,9 +48,19 @@ void CollisionManager::Load(const Map& map)
 		}
 	}
 
-	// Add bricks to mColliders
+	//BRICKS
+	Brick* bricks = map.GetBricks();
 
-	// Balls and Paddle ???
+	const int brickSize = map.GetBrickHeight() * map.GetBrickWidth()/(map.GetBrickSize());
+
+	for (int i = 0; i < brickSize; ++i)
+	{
+		// Add tiles to mColliders
+		if (!bricks[i].IsWalkable())
+		{
+			mColliders.push_back(&bricks[i]);
+		}
+	}
 
 	for (std::vector<Collider*>::iterator it = mColliders.begin(); it != mColliders.end(); ++it)
 	{
@@ -116,9 +131,10 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 			ball->CreateBoundingBox();
 			SRect bb = ball->GetBoundingBox();
 			SRect newbb = bb + SVector2(ball->GetVelocity().x * deltaTime, 0.0f);
-			for (std::vector<Collider*>::iterator itOther = mColliders.begin(); itOther != mColliders.end(); ++itOther)
+			//for (std::vector<Collider*>::iterator itOther = mColliders.begin(); itOther != mColliders.end(); ++itOther)
+			for (int i = 0; i < mColliders.size(); ++i)
 			{
-				Collider* other = *itOther;
+				Collider* other = mColliders[i];
 
 				if (other->GetShape() == Collider::box || other->GetShape() == Collider::brick)
 				{
@@ -138,6 +154,7 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						if (other->GetShape() == Collider::brick)
 						{
 							UnRegister(other);
+							i--;
 							// continue?
 						}
 					}
@@ -154,6 +171,7 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						if (other->GetShape() == Collider::brick)
 						{
 							UnRegister(other);
+							i--;
 							// continue?
 						}
 					}
@@ -175,6 +193,7 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						if (other->GetShape() == Collider::brick)
 						{
 							UnRegister(other);
+							i--;
 							// continue?
 						}
 					}
@@ -191,6 +210,7 @@ void CollisionManager::Update(float deltaTime, const Map& map)
 						if (other->GetShape() == Collider::brick)
 						{
 							UnRegister(other);
+							i--;
 							// continue?
 						}
 					}
