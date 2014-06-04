@@ -69,6 +69,7 @@ public:
 	virtual void CreateBoundingBox() = 0;
 	virtual void Widen(){}
 	virtual void Shorten() {}
+	virtual void ChangeSpeed(float scalar)			{ mVelocity = SVector2(mVelocity.x * scalar, mVelocity.y * scalar);}
 	
 private:
 	SRect mBoundingBox;

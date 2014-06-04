@@ -25,6 +25,7 @@ public:
 
 private:
 	SGE_Sprite mSprite;
+	float mScalar;
 };
 
 #endif // #ifndef INCLUDED_Paddle_H

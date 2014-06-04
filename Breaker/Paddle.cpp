@@ -2,6 +2,7 @@
 
 Paddle::Paddle()
 	: Collider(Collider::paddle, 0)
+	, mScalar(1.0f)
 {
 	mSprite.Load("paddle.png");
 	Collider::SetPosition(SVector2 (250.0f, 500.0f));
@@ -16,9 +17,9 @@ void Paddle::CreateBoundingBox()
 {
 	int height = mSprite.GetHeight();
 	int width = mSprite.GetWidth();
-	Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - width/2,
+	Collider::SetBoundingBox(SRect (	Collider::GetPosition().x - mScalar*width/2,
 										Collider::GetPosition().y - height, 
-										Collider::GetPosition().x + width/2,
+										Collider::GetPosition().x + mScalar*width/2,
 										Collider::GetPosition().y	
 									));
 }
@@ -47,11 +48,13 @@ void Paddle::Render(const SVector2& offset)
 
 void Paddle::Widen()
 {
-	mSprite.SetScale(SVector2(1.5f, 1.0f));
+	mScalar = 1.5f;
+	mSprite.SetScale(SVector2(mScalar, 1.0f));
 	CreateBoundingBox();
 }
 void Paddle::Shorten()
 {
-	mSprite.SetScale(SVector2(0.75f, 1.0f));
+	mScalar = 0.75f;
+	mSprite.SetScale(SVector2(mScalar, 1.0f));
 	CreateBoundingBox();
 }

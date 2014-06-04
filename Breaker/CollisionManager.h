@@ -18,6 +18,8 @@ public:
 	int Update(float deltaTime, const Map& map);
 	void Render(const SVector2& offset);
 
+	void BrickCollision(Collider* brick, Collider* ball);
+
 	//SRect GetBoundingBoxFromSegment(const SLineSegment& line) const;
 
 private:

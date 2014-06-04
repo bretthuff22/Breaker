@@ -128,7 +128,7 @@ void Ball::Kill()
 
 void Ball::SetRandomVelocity()
 {
-	float kSpeed = 600.0f;
+	float kSpeed = 500.0f;
 	SVector2 vel(RandomFloat(-(kSpeed) + 1, (kSpeed -1)), -1*sqrtf(kSpeed*kSpeed - (Collider::GetVelocity().x*Collider::GetVelocity().x)));
 	Collider::SetVelocity(vel);
 }

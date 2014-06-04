@@ -167,19 +167,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 						{
 							if (other->GetType() != Collider::METAL)
 							{
-								if (other->GetType() == Collider::WIDEN)
-								{
-									mPaddleWiden = true;
-								}
-								if (other->GetType() == Collider::SHORT)
-								{
-									mPaddleShorten = true;
-								}
-								other->DecreaseHits();
-								if (other->GetType() == Collider::TRIHIT)
-								{
-									other->SetSpriteType(other->GetSpriteType() + 1);
-								}
+								BrickCollision(other, ball);
+								
 								if (other->GetHits() == 0)
 								{
 									score += other->GetValue();
@@ -203,19 +192,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 						{
 							if (other->GetType() != Collider::METAL)
 							{
-								if (other->GetType() == Collider::WIDEN)
-								{
-									mPaddleWiden = true;
-								}
-								if (other->GetType() == Collider::SHORT)
-								{
-									mPaddleShorten = true;
-								}
-								other->DecreaseHits();
-								if (other->GetType() == Collider::TRIHIT)
-								{
-									other->SetSpriteType(other->GetSpriteType() + 1);
-								}
+								BrickCollision(other, ball);
+								
 								if (other->GetHits() == 0)
 								{
 									score += other->GetValue();
@@ -244,19 +222,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 						{
 							if (other->GetType() != Collider::METAL)
 							{
-								if (other->GetType() == Collider::WIDEN)
-								{
-									mPaddleWiden = true;
-								}
-								if (other->GetType() == Collider::SHORT)
-								{
-									mPaddleShorten = true;
-								}
-								other->DecreaseHits();
-								if (other->GetType() == Collider::TRIHIT)
-								{
-									other->SetSpriteType(other->GetSpriteType() + 1);
-								}
+								BrickCollision(other, ball);
+								
 								if (other->GetHits() == 0)
 								{
 									score += other->GetValue();
@@ -281,19 +248,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 						{
 							if (other->GetType() != Collider::METAL)
 							{
-								if (other->GetType() == Collider::WIDEN)
-								{
-									mPaddleWiden = true;
-								}
-								if (other->GetType() == Collider::SHORT)
-								{
-									mPaddleShorten = true;
-								}
-								other->DecreaseHits();
-								if (other->GetType() == Collider::TRIHIT)
-								{
-									other->SetSpriteType(other->GetSpriteType() + 1);
-								}
+								BrickCollision(other, ball);
+								
 								if (other->GetHits() == 0)
 								{
 									score += other->GetValue();
@@ -359,20 +315,19 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 
 		// DELETE BALL IF IT IS OFF THE SCREEN
 		const int kWinHeight = IniFile_GetInt("WinHeight", 600);
-		//if (ball->GetPosition().y > kWinHeight)
-		//{
-		//	balls.erase(it);
 
-		//	for (std::vector<Collider*>::iterator itColliders = mColliders.begin(); itColliders != mColliders.end(); ++itColliders)
-		//	{
-		//		Collider* shape = *itColliders;
-		//		if (*itColliders == ball)
-		//		{
-		//			UnRegister(*itColliders);
-		//		}
-		//		break;
-		//	}
-		//}
+		if (ball->GetPosition().y > kWinHeight*2)		// erasing ball if not mBall (would have been reset already)
+		{
+			for (int i = 0; i < mColliders.size(); ++i)
+			{
+				Collider* ballFound = mColliders[i];
+				if (ballFound == ball)
+				{
+					UnRegister(ball);
+				}
+				break;
+			}
+		}
 		//break;
 	}
 	
@@ -385,7 +340,62 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 
 void CollisionManager::Render(const SVector2& offset)
 {
+	// RENDER NON BRICKS
+	for (std::vector<Collider*>::iterator it = mColliders.begin(); it != mColliders.end(); ++it)
+	{
+		Collider* collider = *it;
+		if (collider->GetShape() != Collider::brick)
+		{
+			collider->Render(offset);
+		}
+		//delete collider;
+	}
+}
 
+void CollisionManager::BrickCollision(Collider* brick, Collider* ball)
+{
+	if (brick->GetType() == Collider::WIDEN)
+	{
+		mPaddleWiden = true;
+	}
+	if (brick->GetType() == Collider::SHORT)
+	{
+		mPaddleShorten = true;
+	}
+	if (brick->GetType() == Collider::PLUS)
+	{
+		ball->ChangeSpeed(1.5f);
+	}
+	if (brick->GetType() == Collider::MINUS)
+	{
+		ball->ChangeSpeed(0.75f);
+	}
+	if (brick->GetType() == Collider::BOMB)
+	{
+		Ball* ball1 = new Ball();
+		Ball* ball2 = new Ball();
+		Ball* ball3 = new Ball();
+		ball1->SetPosition(SVector2(brick->GetPosition().x - 25.0f, brick->GetPosition().y));
+		ball2->SetPosition(SVector2(brick->GetPosition().x, brick->GetPosition().y));
+		ball3->SetPosition(SVector2(brick->GetPosition().x + 25.0f, brick->GetPosition().y));
+		ball1->Load();
+		ball2->Load();
+		ball3->Load();
+		ball1->SetAlive(true);
+		ball2->SetAlive(true);
+		ball3->SetAlive(true);
+		ball1->SetRandomVelocity();
+		ball2->SetRandomVelocity();
+		ball3->SetRandomVelocity();
+		Register(ball1);
+		Register(ball2);
+		Register(ball3);
+	}
+	brick->DecreaseHits();
+	if (brick->GetType() == Collider::TRIHIT)
+	{
+		brick->SetSpriteType(brick->GetSpriteType() + 1);
+	}
 }
 
 /*SRect CollisionManager::GetBoundingBoxFromSegment(const SLineSegment& line) const

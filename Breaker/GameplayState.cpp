@@ -111,8 +111,8 @@ void GameplayState::Render()
 	offset.y = Clamp(offset.y, (float)kScreenHeight - mMap.GetHeight(), 0.0f);
 
 	mMap.Render(offset);
-	mPaddle->Render(offset);
-	mBall->Render(offset);
+	//mPaddle->Render(offset);
+	//mBall->Render(offset);
 	mCollManager->Render(offset);
 
 	int score = mGameContext.GetScore();
