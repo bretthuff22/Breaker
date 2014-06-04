@@ -18,7 +18,7 @@ public:
 	virtual void Render();
 
 private:
-	SGE_Font mFont;
+	SGE_Sprite mBackground;
 	SGE_Font mScoreFont;
 	SGE_Cursor mCursor;
 	SGE_Button mStartButton;

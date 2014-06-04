@@ -14,55 +14,32 @@ FrontendState::~FrontendState()
 void FrontendState::Load()
 {
 	mGameContext.SetScore(0);
-	mFont.Load(120, true);
-	mFont.SetColor(0, 200, 255);
+	mBackground.Load("MainMenu.png");
 
-	mCursor.Load("sword.png");
+	mCursor.Load("pointer.png");
 
-	mStartButton.Load("button_on.png", "button_off.png");
-	mStartButton.SetPosition(200.0f, 500.0f);
-	mStartButton.SetText("Level 1", 255, 255, 255);
-
-	mStartButton2.Load("button_on.png", "button_off.png");
-	mStartButton2.SetPosition(200.0f, 550.0f);
-	mStartButton2.SetText("Level 2", 255, 255, 255);
-
-	mStartButton3.Load("button_on.png", "button_off.png");
-	mStartButton3.SetPosition(200.0f, 600.0f);
-	mStartButton3.SetText("Mario", 255, 255, 255);
+	mStartButton.Load("button_off.png", "button_on.png");
+	mStartButton.SetPosition(414.0f, 400.0f);
+	mStartButton.SetText("Start", 255, 255, 255);
 }
 
 void FrontendState::Unload()
 {
-	mFont.Unload();
+	mBackground.Unload();
 	mCursor.Unload();
 	mStartButton.Unload();
-	mStartButton2.Unload();
-	mStartButton3.Unload();
 }
 
 GameState FrontendState::Update(float deltaTime)
 {
 	mCursor.Update(deltaTime);
 	mStartButton.Update(deltaTime);
-	mStartButton2.Update(deltaTime);
-	mStartButton3.Update(deltaTime);
 
 	GameState nextState = GameState::Invalid;
 
 	if (mStartButton.IsPressed())
 	{
 		mGameContext.SetLevel(0);
-		nextState = GameState::Gameplay;
-	}
-	else if (mStartButton2.IsPressed())
-	{
-		mGameContext.SetLevel(1);
-		nextState = GameState::Gameplay;
-	}
-	else if (mStartButton3.IsPressed())
-	{
-		mGameContext.SetLevel(2);
 		nextState = GameState::Gameplay;
 	}
 	else if (Input_IsKeyPressed(Keys::ESCAPE))
@@ -74,9 +51,7 @@ GameState FrontendState::Update(float deltaTime)
 
 void FrontendState::Render()
 {
-	mFont.Print("Breaker", 100, 100);
+	mBackground.Render();
 	mStartButton.Render();
-	mStartButton2.Render();
-	mStartButton3.Render();
 	mCursor.Render();
 }

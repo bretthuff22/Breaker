@@ -15,22 +15,22 @@ ScoreState::~ScoreState()
 
 void ScoreState::Load()
 {
-	mFont.Load(120, true);
-	mFont.SetColor(0, 200, 255);
+	mBackground.Load("ScoreScreen.png");
+	
 	mScoreFont.Load(120, true);
-	mScoreFont.SetColor(0, 200, 255);
+	mScoreFont.SetColor(255, 255, 255);
 
-	mCursor.Load("sword.png");
+	mCursor.Load("pointer.png");
 
-	mStartButton.Load("button_on.png", "button_off.png");
-	mStartButton.SetPosition(200.0f, 500.0f);
+	mStartButton.Load("button_off.png", "button_on.png");
+	mStartButton.SetPosition(414.0f, 400.0f);
 	mStartButton.SetText("Main Menu", 255, 255, 255);
 
 }
 
 void ScoreState::Unload()
 {
-	mFont.Unload();
+	mBackground.Unload();
 	mScoreFont.Unload();
 	mCursor.Unload();
 	mStartButton.Unload();
@@ -58,10 +58,10 @@ GameState ScoreState::Update(float deltaTime)
 
 void ScoreState::Render()
 {
-	mFont.Print("Score: ", 100, 100);
+	mBackground.Render();
 	int score = mGameContext.GetScore();
 	string scoreString = to_string(score);
-	mScoreFont.Print(scoreString.c_str(), 200, 300);
+	mScoreFont.Print(scoreString.c_str(), 380, 200);
 	mStartButton.Render();
 	mCursor.Render();
 }
