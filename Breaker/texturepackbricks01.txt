@@ -1,3 +1,17 @@
-Count: 2
+Count: 16
 brick_null.png
 brick_red.png
+brick_orange.png
+brick_yellow.png
+brick_green.png
+brick_blue.png
+brick_white.png
+brick_gray.png
+brick_black.png
+brick_bomb.png
+brick_laser.png
+brick_metal.png
+brick_minus.png
+brick_plus.png
+brick_short.png
+brick_widen.png

@@ -1,10 +1,14 @@
 #include "GameplayState.h"
+#include <iostream>
+using namespace std;
 
 GameplayState::GameplayState(GameContext& gc)
 	: AppState(gc)
+	, mNumBalls(3)
 {
 	mPaddle = new Paddle();
 	mBall = new Ball();
+	mCollManager =  new CollisionManager();
 }
 	
 GameplayState::~GameplayState()
@@ -14,6 +18,9 @@ GameplayState::~GameplayState()
 
 void GameplayState::Load()
 {
+	mScoreFont.Load(20, true);
+	mScoreFont.SetColor(255, 0, 0);
+
 	if (mGameContext.GetLevel()==0)
 	{
 		mMap.Load("level01.txt", "level01bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
@@ -31,33 +38,58 @@ void GameplayState::Load()
 	mPaddle->SetPosition(SVector2(400.0f, 550.0f));
 	mBall->SetPosition(SVector2(400.0f, 484.0f));
 
-	mCollManager.Register(mPaddle);
-	mCollManager.Register(mBall);
-	mCollManager.Load(mMap);
+	mCollManager->Register(mPaddle);
+	mCollManager->Register(mBall);
+	mCollManager->Load(mMap);
 }
 
 void GameplayState::Unload()
 {
-	
-	mCollManager.Unload();
-	mCollManager.UnRegister(mPaddle);
+	mCollManager->Unload();
+	mCollManager->UnRegister(mPaddle);
 	mPaddle->Unload();
-	mCollManager.UnRegister(mBall);
+	mCollManager->UnRegister(mBall);
 	mBall->Unload();
 	mMap.Unload();
-	
+	mScoreFont.Unload();
 }
 
 GameState GameplayState::Update(float deltaTime)
 {
-
 	mMap.Update(deltaTime);
 	mPaddle->Update(deltaTime);
 	mBall->Update(deltaTime);
+	int scoreChange = mCollManager->Update(deltaTime, mMap);
 
-	mCollManager.Update(deltaTime, mMap);
-	
+	if (scoreChange)
+	{
+		mGameContext.SetScore( scoreChange + mGameContext.GetScore());
+		mMap.SetBrickCount(mMap.GetBrickCount() - scoreChange/10);
+	}
+
 	GameState nextState = GameState::Invalid;
+
+	const int kWinHeight = IniFile_GetInt("WinHeight", 600);
+	if (mBall->GetPosition().y > kWinHeight)
+	{
+		mNumBalls--;
+		if (mNumBalls > 0)
+		{
+			mBall->SetAlive(false);
+			mBall->SetPosition(SVector2(400.0f, 484.0f));
+			mBall->SetVelocity(SVector2(0.0f, 0.0f));
+			//mBall->SetRandomVelocity();
+		}
+		else
+		{
+			nextState = GameState::Score;
+		}
+	}
+
+	if (mMap.GetBrickCount() == 0)
+	{
+		nextState = GameState::Score;
+	}
 
 	if (Input_IsKeyPressed(Keys::ESCAPE))
 	{
@@ -81,7 +113,11 @@ void GameplayState::Render()
 	mMap.Render(offset);
 	mPaddle->Render(offset);
 	mBall->Render(offset);
-	mCollManager.Render(offset);
+	mCollManager->Render(offset);
+
+	int score = mGameContext.GetScore();
+	string scoreString = "Score: " + to_string(score);
+	mScoreFont.Print(scoreString.c_str(), 800, 0);
 }
 
 

@@ -1,7 +1,7 @@
 #include "Brick.h"
 
 Brick::Brick()
-	: Collider(Collider::brick)
+	: Collider(Collider::brick, 10)
 	, mWidth(0)
 	, mHeight(0)
 	, mWalkable(true)
@@ -23,3 +23,4 @@ void Brick::CreateBoundingBox()
 		Collider::GetPosition().y + mHeight/2.0f
 	));
 }
+

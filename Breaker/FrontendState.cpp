@@ -13,6 +13,7 @@ FrontendState::~FrontendState()
 
 void FrontendState::Load()
 {
+	mGameContext.SetScore(0);
 	mFont.Load(120, true);
 	mFont.SetColor(0, 200, 255);
 

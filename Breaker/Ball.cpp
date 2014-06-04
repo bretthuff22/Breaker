@@ -3,7 +3,7 @@
 
 Ball::Ball()
 	: mActive(false)
-	, Collider(Collider::circle)
+	, Collider(Collider::circle, 0)
 {
 	Collider::SetPosition(SVector2(0.0f, 0.0f));
 	Collider::SetVelocity(SVector2 (0.0f, 0.0f));
@@ -128,7 +128,7 @@ void Ball::Kill()
 
 void Ball::SetRandomVelocity()
 {
-	float kSpeed = 200.0f;
+	float kSpeed = 600.0f;
 	SVector2 vel(RandomFloat(-(kSpeed) + 1, (kSpeed -1)), -1*sqrtf(kSpeed*kSpeed - (Collider::GetVelocity().x*Collider::GetVelocity().x)));
 	Collider::SetVelocity(vel);
 }

@@ -7,12 +7,13 @@ using namespace SGE;
 #include "FrontendState.h"
 #include "GameplayState.h"
 #include "GameContext.h"
+#include "ScoreState.h"
 
 AppState* currentState = nullptr;
 GameState nextState = GameState::Invalid;
 GameContext gameContext;
 
-Paddle paddle;
+//Paddle paddle;
 
 void SGE_Initialize()
 {
@@ -40,8 +41,11 @@ bool SGE_Update(float deltaTime)
 		case GameState::Frontend:
 			currentState = new FrontendState(gameContext);
 			break;
-		case GameState:: Gameplay:
+		case GameState::Gameplay:
 			currentState = new GameplayState(gameContext);
+			break;
+		case GameState::Score:
+			currentState = new ScoreState(gameContext);
 			break;
 		}
 

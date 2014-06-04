@@ -7,6 +7,7 @@
 class CollisionManager
 {
 public:
+	CollisionManager() : mPaddleWiden(false), mPaddleShorten(false){};
 	static CollisionManager& Get();
 
 	void Register(Collider *coll);
@@ -14,14 +15,16 @@ public:
 
 	void Load(const Map& map);
 	void Unload();
-	void Update(float deltaTime, const Map& map);
+	int Update(float deltaTime, const Map& map);
 	void Render(const SVector2& offset);
 
 	//SRect GetBoundingBoxFromSegment(const SLineSegment& line) const;
 
 private:
 	std::vector<Collider*> mColliders;
-
+	
+	bool mPaddleWiden;
+	bool mPaddleShorten;
 };
 
 #endif

@@ -30,8 +30,11 @@ private:
 	Paddle* mPaddle;
 	bool mBallInPlay;
 	Ball* mBall;
+	int mNumBalls;
+	SGE_Font mScoreFont;
 
-	CollisionManager mCollManager;
+	CollisionManager* mCollManager;
+
 };
 
 #endif // #ifndef INCLUDED_GameplayState_H

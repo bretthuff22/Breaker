@@ -16,6 +16,7 @@ Map::Map()
 	, mBrickWidth(0)
 	, mBrickHeight(0)
 	, mBrickSpriteCount(0)
+	, mBrickCount (0)
 {
 }
 
@@ -235,7 +236,54 @@ bool Map::LoadLevel(const char* pLevelFile, const char* pLevelBrickFile)
 			mBricks[i].SetPosition(SVector2(posX, posY));
 			mBricks[i].SetSize(mBrickWidth, mBrickHeight);
 			mBricks[i].CreateBoundingBox();
-			mBricks[i].SetSpriteType(fgetc(pBrickFile) - '0'); // (-'0') converts to int
+			const int type = fgetc(pBrickFile) - '0';
+			mBricks[i].SetSpriteType(type); // (-'0') converts to int
+			if (type < 6 && type > 0)
+			{
+				mBricks[i].SetType(Brick::BrickType::REGULAR);
+				mBrickCount++;
+			}
+			else if (type == 6)
+			{
+				mBricks[i].SetType(Brick::BrickType::TRIHIT);
+				mBricks[i].SetHits(3);
+				mBrickCount++;
+			}
+			else if (type == 9)
+			{
+				mBricks[i].SetType(Brick::BrickType::BOMB);
+				mBrickCount++;
+			}
+			else if (type == 10)
+			{
+				mBricks[i].SetType(Brick::BrickType::LASER);
+				mBrickCount++;
+			}
+			else if (type == 11)
+			{
+				mBricks[i].SetType(Brick::BrickType::METAL);
+			}
+			else if (type == 12)
+			{
+				mBricks[i].SetType(Brick::BrickType::MINUS);
+				mBrickCount++;
+			}
+			else if (type == 13)
+			{
+				mBricks[i].SetType(Brick::BrickType::PLUS);
+				mBrickCount++;
+			}
+			else if (type == 14)
+			{
+				mBricks[i].SetType(Brick::BrickType::SHORT);
+				mBrickCount++;
+			}
+			else if (type == 15)
+			{
+				mBricks[i].SetType(Brick::BrickType::WIDEN);
+				mBrickCount++;
+			}
+
 			mBricks[i].SetWalkable(mBricks[i].GetSpriteType() == 0);
 		}
 		fgetc(pBrickFile);

@@ -1,0 +1,28 @@
+#ifndef INCLUDED_ScoreSTATE_H
+#define INCLUDED_ScoreSTATE_H
+
+#include <SGE.h>
+using namespace SGE;
+
+#include "AppState.h"
+
+class ScoreState : public AppState
+{
+public: 
+	ScoreState(GameContext& gc);
+	virtual ~ScoreState();
+
+	virtual void Load();
+	virtual void Unload();
+	virtual GameState Update(float deltaTime);
+	virtual void Render();
+
+private:
+	SGE_Font mFont;
+	SGE_Font mScoreFont;
+	SGE_Cursor mCursor;
+	SGE_Button mStartButton;
+	
+};
+
+#endif // #ifndef INCLUDED_ScoreState_H

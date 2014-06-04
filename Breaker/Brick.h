@@ -12,6 +12,7 @@ using namespace SGE;
 class Brick : public Collider
 {
 public: 
+	
 	Brick();
 	~Brick();
 
@@ -28,8 +29,11 @@ public:
 	void SetSize(int width, int height)			{ mWidth = width; mHeight = height;}
 	//void SetSpriteType(int type)				{ mSpriteType = type; }
 	void SetWalkable(bool walkable)				{ mWalkable = walkable; }
+	
 
 	virtual void CreateBoundingBox();
+
+	
 
 private:
 	//SVector2 mPosition;
@@ -37,6 +41,7 @@ private:
 	int mHeight;
 	//int mSpriteType;
 	bool mWalkable;
+	
 };
 
 #endif // #ifndef INCLUDED_Brick_H

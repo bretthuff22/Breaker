@@ -6,6 +6,7 @@ enum class GameState
 	Invalid,
 	Frontend,
 	Gameplay,
+	Score,
 	Quit
 };
 

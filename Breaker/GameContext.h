@@ -10,8 +10,12 @@ public:
 	void SetLevel(int level)	{mLevel = level;}
 	int GetLevel() const		{return mLevel;}
 
+	void SetScore(int score)	{mScore = score;}
+	int GetScore()				{return mScore;}
+
 private:
 	int mLevel;
+	int mScore;
 };
 
 #endif	//	INCLUDED_GAMECONTEXT_H

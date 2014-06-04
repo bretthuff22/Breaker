@@ -94,6 +94,7 @@
     <ClCompile Include="GameplayState.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="ScoreState.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -109,6 +110,7 @@
     <ClInclude Include="GameStates.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="ScoreState.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>

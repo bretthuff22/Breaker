@@ -20,6 +20,8 @@ public:
 	void Update(float deltaTime);
 	void Render(const SVector2& offset);
 
+	virtual void Widen();
+	virtual void Shorten();
 
 private:
 	SGE_Sprite mSprite;

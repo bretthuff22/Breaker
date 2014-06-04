@@ -17,7 +17,21 @@ public:
 		paddle
 	};
 
-	Collider(Shape shape) : mShape(shape), mSpriteType(0) {};
+	enum BrickType
+	{
+		NLL,
+		REGULAR,
+		TRIHIT,
+		BOMB,
+		LASER,
+		METAL,
+		MINUS,
+		PLUS,
+		SHORT,
+		WIDEN
+	};
+
+	Collider(Shape shape, int value);
 	~Collider(){};
 
 	virtual void Load(){};
@@ -42,8 +56,19 @@ public:
 	void SetSpriteType(int type)					{ mSpriteType = type; }
 
 	int GetSpriteType()								{ return mSpriteType; }
+	int GetValue()									{ return mValue; }
+
+	void SetType(BrickType type)					{ mBrickType = type; }
+	void SetHits(int hits)							{ mHits = hits; }
+
+	void DecreaseHits()								{ mHits--;	}
+
+	BrickType GetType()								{ return mBrickType; }
+	int GetHits()									{ return mHits; }
 
 	virtual void CreateBoundingBox() = 0;
+	virtual void Widen(){}
+	virtual void Shorten() {}
 	
 private:
 	SRect mBoundingBox;
@@ -51,6 +76,9 @@ private:
 	SVector2 mPosition;
 	SVector2 mVelocity;
 	int mSpriteType;
+	int mValue;
+	int mHits;
+	BrickType mBrickType;
 };
 
 

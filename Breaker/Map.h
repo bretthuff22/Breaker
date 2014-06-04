@@ -24,15 +24,19 @@ public:
 	int GetWidth() const		{ return mColumns * mTileSize; }
 	int GetHeight() const		{ return mRows * mTileSize; }
 	int GetTileSize() const		{ return mTileSize; }
+	int GetBrickCount() const	{ return mBrickCount; }
 
 	int GetBrickWidth() const	{ return mBrickColumns * mBrickWidth; }
 	int GetBrickHeight() const	{ return mBrickRows * mBrickHeight; }
 	int GetBrickSize() const	{ return mBrickWidth * mBrickHeight; }
 
+	void DecreaseBricks()		{ mBrickCount--;	}
+
 	Tile* GetTiles() const		{ return mTiles; }
 	Brick* GetBricks() const	{ return mBricks; }
 
 	void SetBrickType(int index, int type);
+	void SetBrickCount(int count)		{ mBrickCount = count; }
 
 private:
 	// Block copy construction and assignment operation
@@ -56,6 +60,7 @@ private:
 	int mBrickWidth;
 	int mBrickHeight;
 	int mBrickSpriteCount;
+	int mBrickCount;
 };
 
 #endif // #ifndef INCLUDED_MAP_H

@@ -1,7 +1,7 @@
 #include "Tile.h"
 
 Tile::Tile()
-	: Collider(Collider::box)
+	: Collider(Collider::box, 0)
 	, mSize(0)
 	, mWalkable(true)
 {
