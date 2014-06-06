@@ -22,6 +22,7 @@ private:
 	SGE_Font mScoreFont;
 	SGE_Cursor mCursor;
 	SGE_Button mStartButton;
+	SGE_Sound mClick;
 	
 };
 

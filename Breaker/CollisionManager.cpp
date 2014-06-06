@@ -19,11 +19,16 @@ void CollisionManager::UnRegister(Collider *coll)
 {
 	for (std::vector<Collider*>::iterator it = mColliders.begin(); it != mColliders.end(); ++it)
 	{
-		if (*it == coll)
+		Collider* collider = *it;
+		if (collider == coll)
 		{
-			if (coll->GetShape() == Collider::brick)
+			if (collider->GetShape() == Collider::brick)
 			{
-				coll->SetSpriteType(0);
+				collider->SetSpriteType(0);
+				boomSound.Play();
+				mExplosions[mExplosionIndex].SetPosition(collider->GetPosition() + SVector2(48.0f, 0.0f));
+				mExplosions[mExplosionIndex].Start(100.0f, true);
+				mExplosionIndex = (mExplosionIndex + 1) % 20;
 			}
 			mColliders.erase(it);
 			return;
@@ -66,6 +71,18 @@ void CollisionManager::Load(const Map& map)
 		Collider* load = *it;
 		load->Load();
 	}
+
+	//Sound
+	blipSound.Load("blip.wav");
+	boomSound.Load("boom.wav");
+	clinkSound.Load("clink.wav");
+
+
+	//Explosions
+	for (int i = 0; i <  20; ++i)
+	{
+		mExplosions[i].Load("explosion.txt");
+	}
 }
 
 void CollisionManager::Unload()
@@ -76,6 +93,17 @@ void CollisionManager::Unload()
 		Collider* unload = *it;
 		//UnRegister(unload);
 		unload->Unload();
+	}
+
+	//Sound
+	blipSound.Unload();
+	boomSound.Unload();
+	clinkSound.Unload();
+
+	//Explosions
+	for (int i = 0; i < 20; ++i)
+	{
+		mExplosions[i].Unload();
 	}
 }
 
@@ -162,6 +190,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().min.x - bb.max.x) - 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
 
+						blipSound.Play();
+
 						// DESTROY IF BRICK
 						if (other->GetShape() == Collider::brick)
 						{
@@ -176,6 +206,10 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 									i--;
 								}
 							}
+							else
+							{
+								clinkSound.Play();
+							}
 						}
 					}
 					// Left collision
@@ -186,6 +220,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x + (int)(other->GetBoundingBox().max.x - bb.min.x) + 1.0f, ball->GetPosition().y));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
+
+						blipSound.Play();
 						
 						// DESTROY IF BRICK
 						if (other->GetShape() == Collider::brick)
@@ -200,6 +236,10 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 									UnRegister(other);
 									i--;
 								}
+							}
+							else
+							{
+								clinkSound.Play();
 							}
 						}
 					}
@@ -216,6 +256,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().min.y - bb.max.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
+
+						blipSound.Play();
 						
 						// DESTROY IF BRICK
 						if (other->GetShape() == Collider::brick)
@@ -231,6 +273,10 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 									i--;
 								}
 							}
+							else
+							{
+								clinkSound.Play();
+							}
 						}
 					}
 
@@ -242,6 +288,8 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 					{
 						//ball->SetPosition(SVector2(ball->GetPosition().x, ball->GetPosition().y - (int)(other->GetBoundingBox().max.y - bb.min.y - 1.0f)));
 						ball->SetVelocity(SVector2(ball->GetVelocity().x, ball->GetVelocity().y * -1));
+
+						blipSound.Play();
 						
 						// DESTROY IF BRICK
 						if (other->GetShape() == Collider::brick)
@@ -256,6 +304,10 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 									UnRegister(other);
 									i--;
 								}
+							}
+							else
+							{
+								clinkSound.Play();
 							}
 						}
 					}
@@ -303,7 +355,7 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 							ball->SetVelocity(SVector2(ball->GetVelocity().x * -1, ball->GetVelocity().y));
 						}
 						
-
+						blipSound.Play();
 					}
 				}
 			}
@@ -316,24 +368,27 @@ int CollisionManager::Update(float deltaTime, const Map& map)
 		// DELETE BALL IF IT IS OFF THE SCREEN
 		const int kWinHeight = IniFile_GetInt("WinHeight", 600);
 
-		if (ball->GetPosition().y > kWinHeight*2)		// erasing ball if not mBall (would have been reset already)
+		if (ball->GetPosition().y > kWinHeight + ball->GetPosition().x + (int)ball->GetVelocity().x * deltaTime, ball->GetPosition().y + (int)ball->GetVelocity().y * deltaTime)		// erasing ball if not mBall (would have been reset already)
 		{
 			for (int i = 0; i < mColliders.size(); ++i)
 			{
 				Collider* ballFound = mColliders[i];
 				if (ballFound == ball)
 				{
-					UnRegister(ball);
+					ball->SetVelocity(SVector2(0.0f, 0.0f));
+					UnRegister(ballFound);
 				}
 				break;
 			}
 		}
-		//break;
 	}
 	
-	// Move
-	// Check collision
-	// Resolve
+
+	// Explosions
+	for (int i = 0; i < 20; ++i)
+	{
+		mExplosions[i].Update(deltaTime);
+	}
 
 	return score;
 }
@@ -349,6 +404,13 @@ void CollisionManager::Render(const SVector2& offset)
 			collider->Render(offset);
 		}
 		//delete collider;
+	}
+
+
+	// Explosions
+	for (int i = 0; i < 20; ++i)
+	{
+		mExplosions[i].Render(true);
 	}
 }
 
@@ -391,11 +453,14 @@ void CollisionManager::BrickCollision(Collider* brick, Collider* ball)
 		Register(ball2);
 		Register(ball3);
 	}
-	brick->DecreaseHits();
 	if (brick->GetType() == Collider::TRIHIT)
 	{
-		brick->SetSpriteType(brick->GetSpriteType() + 1);
+		if (brick->GetSpriteType() == 6 || brick->GetSpriteType() == 7)
+		{
+			brick->SetSpriteType(brick->GetSpriteType() + 1);
+		}
 	}
+	brick->DecreaseHits();
 }
 
 /*SRect CollisionManager::GetBoundingBoxFromSegment(const SLineSegment& line) const

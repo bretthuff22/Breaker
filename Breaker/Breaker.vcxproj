@@ -92,6 +92,7 @@
     <ClCompile Include="FrontendState.cpp" />
     <ClCompile Include="GameContext.cpp" />
     <ClCompile Include="GameplayState.cpp" />
+    <ClCompile Include="LevelSelectState.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="ScoreState.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="GameContext.h" />
     <ClInclude Include="GameplayState.h" />
     <ClInclude Include="GameStates.h" />
+    <ClInclude Include="LevelSelectState.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="ScoreState.h" />
@@ -116,6 +118,15 @@
   <ItemGroup>
     <Text Include="level01.txt" />
     <Text Include="level01bricks.txt" />
+    <Text Include="level02bricks.txt" />
+    <Text Include="level03bricks.txt" />
+    <Text Include="level04bricks.txt" />
+    <Text Include="level05bricks.txt" />
+    <Text Include="level06bricks.txt" />
+    <Text Include="level07bricks.txt" />
+    <Text Include="level08bricks.txt" />
+    <Text Include="level09bricks.txt" />
+    <Text Include="level10bricks.txt" />
     <Text Include="texturepack01.txt" />
     <Text Include="texturepackbricks01.txt" />
   </ItemGroup>

@@ -7,7 +7,7 @@
 class CollisionManager
 {
 public:
-	CollisionManager() : mPaddleWiden(false), mPaddleShorten(false){};
+	CollisionManager() : mPaddleWiden(false), mPaddleShorten(false), mExplosionIndex(0){};
 	static CollisionManager& Get();
 
 	void Register(Collider *coll);
@@ -27,6 +27,13 @@ private:
 	
 	bool mPaddleWiden;
 	bool mPaddleShorten;
+
+	SGE_Sound blipSound;
+	SGE_Sound boomSound;
+	SGE_Sound clinkSound;
+
+	SGE_Emitter mExplosions[20];
+	int mExplosionIndex;
 };
 
 #endif

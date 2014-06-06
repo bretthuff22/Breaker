@@ -14,6 +14,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="ScoreState.cpp" />
+    <ClCompile Include="LevelSelectState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Paddle.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="ScoreState.h" />
+    <ClInclude Include="LevelSelectState.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -46,6 +48,33 @@
       <Filter>Data</Filter>
     </Text>
     <Text Include="texturepackbricks01.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level02bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level03bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level04bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level05bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level06bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level07bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level08bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level09bricks.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="level10bricks.txt">
       <Filter>Data</Filter>
     </Text>
   </ItemGroup>

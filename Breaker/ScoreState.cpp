@@ -26,6 +26,8 @@ void ScoreState::Load()
 	mStartButton.SetPosition(414.0f, 400.0f);
 	mStartButton.SetText("Main Menu", 255, 255, 255);
 
+	mClick.Load("blip.wav");
+
 }
 
 void ScoreState::Unload()
@@ -34,6 +36,7 @@ void ScoreState::Unload()
 	mScoreFont.Unload();
 	mCursor.Unload();
 	mStartButton.Unload();
+	mClick.Unload();
 }
 
 GameState ScoreState::Update(float deltaTime)
@@ -48,6 +51,7 @@ GameState ScoreState::Update(float deltaTime)
 	{
 		mGameContext.SetLevel(0);
 		nextState = GameState::Frontend;
+		mClick.Play();
 	}
 	else if (Input_IsKeyPressed(Keys::ESCAPE))
 	{

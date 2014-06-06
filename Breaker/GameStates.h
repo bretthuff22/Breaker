@@ -5,6 +5,7 @@ enum class GameState
 {
 	Invalid,
 	Frontend,
+	LevelSelect,
 	Gameplay,
 	Score,
 	Quit

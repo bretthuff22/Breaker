@@ -6,6 +6,6 @@ Direction:	0, 1
 Span:		180
 Speed:		50, 80
 Lifetime:	0.8
-Scale:		0.8, 1.5
+Scale:		0.5, 1.0
 StartColor:	255, 50, 20
 EndColor:	0, 0, 0

@@ -21,17 +21,48 @@ void GameplayState::Load()
 	mScoreFont.Load(20, true);
 	mScoreFont.SetColor(255, 0, 0);
 
+	mLivesFont.Load(20, true);
+	mLivesFont.SetColor(255, 0, 0);
+
 	if (mGameContext.GetLevel()==0)
 	{
 		mMap.Load("level01.txt", "level01bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
 	}
 	else if (mGameContext.GetLevel()==1)
 	{
-		//mMap.Load("level02.txt", "texturepack02.txt");
+		mMap.Load("level01.txt", "level02bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
 	}
 	else if (mGameContext.GetLevel()==2)
 	{
-		//mMap.Load("mariolevel.txt", "mariopack.txt");
+		mMap.Load("level01.txt", "level03bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==3)
+	{
+		mMap.Load("level01.txt", "level04bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==4)
+	{
+		mMap.Load("level01.txt", "level05bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==5)
+	{
+		mMap.Load("level01.txt", "level06bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==6)
+	{
+		mMap.Load("level01.txt", "level07bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==7)
+	{
+		mMap.Load("level01.txt", "level08bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==8)
+	{
+		mMap.Load("level01.txt", "level09bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
+	}
+	else if (mGameContext.GetLevel()==9)
+	{
+		mMap.Load("level01.txt", "level10bricks.txt", "texturepack01.txt", "texturepackbricks01.txt");
 	}
 
 	
@@ -52,6 +83,10 @@ void GameplayState::Unload()
 	mBall->Unload();
 	mMap.Unload();
 	mScoreFont.Unload();
+	mLivesFont.Unload();
+
+	delete mPaddle;
+	mPaddle = nullptr;
 }
 
 GameState GameplayState::Update(float deltaTime)
@@ -78,7 +113,6 @@ GameState GameplayState::Update(float deltaTime)
 			mBall->SetAlive(false);
 			mBall->SetPosition(SVector2(400.0f, 484.0f));
 			mBall->SetVelocity(SVector2(0.0f, 0.0f));
-			//mBall->SetRandomVelocity();
 		}
 		else
 		{
@@ -118,6 +152,9 @@ void GameplayState::Render()
 	int score = mGameContext.GetScore();
 	string scoreString = "Score: " + to_string(score);
 	mScoreFont.Print(scoreString.c_str(), 800, 0);
+
+	string livesString = "Lives: " + to_string(mNumBalls);
+	mLivesFont.Print(livesString.c_str(), 700, 0);
 }
 
 

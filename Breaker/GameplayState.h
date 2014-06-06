@@ -32,6 +32,7 @@ private:
 	Ball* mBall;
 	int mNumBalls;
 	SGE_Font mScoreFont;
+	SGE_Font mLivesFont;
 
 	CollisionManager* mCollManager;
 

@@ -8,6 +8,7 @@ using namespace SGE;
 #include "GameplayState.h"
 #include "GameContext.h"
 #include "ScoreState.h"
+#include "LevelSelectState.h"
 
 AppState* currentState = nullptr;
 GameState nextState = GameState::Invalid;
@@ -40,6 +41,9 @@ bool SGE_Update(float deltaTime)
 		{
 		case GameState::Frontend:
 			currentState = new FrontendState(gameContext);
+			break;
+		case GameState::LevelSelect:
+			currentState = new LevelSelectState(gameContext);
 			break;
 		case GameState::Gameplay:
 			currentState = new GameplayState(gameContext);
