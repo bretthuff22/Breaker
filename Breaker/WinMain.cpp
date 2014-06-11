@@ -38,7 +38,7 @@ void SGE_Terminate()
 
 bool SGE_Update(float deltaTime)
 {
-	if (musicTime >= 61.0f)
+	if (musicTime >= 7.0f)
 	{
 		musicTime = 0.0f;
 	}
