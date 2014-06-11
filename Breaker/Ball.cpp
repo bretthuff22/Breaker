@@ -88,16 +88,7 @@ void Ball::Update(float deltaTime)
 		Kill();
 		mActive = false;
 	}
-	
-	if (mActive == false)
-	{
-		if (Input_IsKeyDown(Keys::SPACE))
-		{
-			mActive = true;
-			SetRandomVelocity();
-			bool check = false;
-		}
-	}
+
 	
 }
 void Ball::Render(const SVector2& offset)

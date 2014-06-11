@@ -5,6 +5,7 @@ using namespace std;
 GameplayState::GameplayState(GameContext& gc)
 	: AppState(gc)
 	, mNumBalls(3)
+	, mMusicTime(0.0f)
 {
 	mPaddle = new Paddle();
 	mBall = new Ball();
@@ -23,6 +24,9 @@ void GameplayState::Load()
 
 	mLivesFont.Load(20, true);
 	mLivesFont.SetColor(255, 0, 0);
+
+	mMusic.Load("music.mp3");
+	
 
 	if (mGameContext.GetLevel()==0)
 	{
@@ -87,10 +91,24 @@ void GameplayState::Unload()
 
 	delete mPaddle;
 	mPaddle = nullptr;
+
+	mMusic.Unload();
 }
 
 GameState GameplayState::Update(float deltaTime)
 {
+	if (mMusicTime >= 61.0f)
+	{
+		mMusicTime = 0.0f;
+	}
+
+	if (mMusicTime == 0.0f)
+	{
+		mMusic.Play();
+	}
+	
+	mMusicTime += deltaTime;
+
 	mMap.Update(deltaTime);
 	mPaddle->Update(deltaTime);
 	mBall->Update(deltaTime);
@@ -107,8 +125,7 @@ GameState GameplayState::Update(float deltaTime)
 	const int kWinHeight = IniFile_GetInt("WinHeight", 600);
 	if (mBall->GetPosition().y > kWinHeight)
 	{
-		mNumBalls--;
-		if (mNumBalls > 0)
+		if (mNumBalls >= 0)
 		{
 			mBall->SetAlive(false);
 			mBall->SetPosition(SVector2(400.0f, 484.0f));
@@ -120,7 +137,7 @@ GameState GameplayState::Update(float deltaTime)
 		}
 	}
 
-	if (mMap.GetBrickCount() == 0)
+	if (mMap.GetBrickCount() == 0 || mNumBalls < 0)
 	{
 		nextState = GameState::Score;
 	}
@@ -128,6 +145,16 @@ GameState GameplayState::Update(float deltaTime)
 	if (Input_IsKeyPressed(Keys::ESCAPE))
 	{
 		nextState = GameState::Frontend;
+	}
+		
+	if (mBall->IsAlive() == false)
+	{
+		if (Input_IsKeyDown(Keys::SPACE))
+		{
+			mBall->SetAlive(true);
+			mBall->SetRandomVelocity();
+			mNumBalls--;
+		}
 	}
 	return nextState;
 }

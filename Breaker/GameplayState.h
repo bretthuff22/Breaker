@@ -34,6 +34,9 @@ private:
 	SGE_Font mScoreFont;
 	SGE_Font mLivesFont;
 
+	SGE_Sound mMusic;
+	float mMusicTime;
+
 	CollisionManager* mCollManager;
 
 };
